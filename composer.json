@@ -1,7 +1,7 @@
 {
 	"name": "mohsen/zagros",
 	"description": "Zagros is a bug tracking system.",
-	"keywords": ["BMS", "Zagros", "bug tracking system"],
+	"keywords": ["BTS", "Zagros", "bug tracking system"],
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.2.*"
