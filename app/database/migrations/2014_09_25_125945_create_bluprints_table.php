@@ -20,7 +20,7 @@ class CreateBluprintsTable extends Migration {
 			$table->integer('milestone_id')->unsigned();
 			$table->foreign('milestone_id')->references('milestone_id')->on('milestones')->onDelete('cascade')->onUpdate('cascade');
 			$table->string('title', 200);
-			$table->text('description');
+			$table->text('description')->nullable();
 			$table->smallInteger('status');
 			$table->timestamps();
 		});

@@ -18,9 +18,9 @@ class CreateMilestonesTable extends Migration {
 			$table->integer('project_id')->unsigned();
 			$table->foreign('project_id')->references('project_id')->on('projects');
 			$table->string('codename', 100);
-			$table->text('description');
+			$table->text('description')->nullable();
 			$table->boolean('released');
-			$table->string('version', 50);
+			$table->string('version', 50)->nullable();
 			$table->timestamps();
 		});
 	}

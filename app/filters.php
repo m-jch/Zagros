@@ -33,6 +33,14 @@ App::after(function($request, $response)
 |
 */
 
+Route::filter('admin', function()
+{
+	if (!Auth::user()->admin)
+	{
+		return Redirect::to('/');
+	}
+});
+
 Route::filter('auth', function()
 {
 	if (Auth::guest())
@@ -43,7 +51,7 @@ Route::filter('auth', function()
 		}
 		else
 		{
-			return Redirect::guest('login');
+			return Redirect::guest('user/login');
 		}
 	}
 });

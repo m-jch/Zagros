@@ -24,9 +24,10 @@ class CreateBugsTable extends Migration {
 			$table->foreign('milestone_id')->references('milestone_id')->on('milestones')->onDelete('cascade')->onUpdate('cascade');
 			$table->integer('blueprint_id')->unsigned();
 			$table->string('title', 200);
-			$table->text('description');
+			$table->text('description')->nullable();
 			$table->smallInteger('type');
 			$table->smallInteger('status');
+			$table->smallInteger('importance');
 			$table->timestamps();
 		});
 	}

@@ -1,0 +1,33 @@
+<?php
+
+return array(
+    'zagros' => 'Zagros',
+    'bts' => 'Bug tracking system',
+    'issue' => 'Create an issue',
+    'pull' => 'Pull request',
+    'contact' => 'Contact us',
+    'login' => 'Login',
+    'register' => 'Register',
+    'recover_pw' => 'Recover password',
+    'sign_in' => 'Sign in',
+    'remember' => 'Remember me',
+    'email' => 'Email',
+    'password' => 'Password',
+    'cpassword' => 'Confirm password',
+    'repo' => 'Repository',
+    'repo_url' => 'Repository URL',
+    'prjs' => 'Projects',
+    'prjs_list' => 'Projects list',
+    'logout' => 'Logout',
+    'user' => 'User',
+    'cnp' => 'Create new project',
+    'cnu' => 'Create new user',
+    'name' => 'Name',
+    'desc' => 'Description',
+    'admin' => 'Admin',
+    'admins' => 'Admins',
+    'writers' => 'Writers',
+    'readers' => 'Readers',
+    'settings' => 'Settings',
+    'dashboard' => 'Dashboard'
+);

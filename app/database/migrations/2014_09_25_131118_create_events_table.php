@@ -24,8 +24,8 @@ class CreateEventsTable extends Migration {
 			$table->integer('blueprint_id')->unsigned();
 			$table->integer('bug_id')->unsigned();
 			$table->smallInteger('type');
-			$table->text('changes');
-			$table->text('description');
+			$table->text('changes')->nullable();
+			$table->text('description')->nullable();
 			$table->timestamps();
 		});
 	}
