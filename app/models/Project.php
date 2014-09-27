@@ -18,11 +18,31 @@ class Project extends Eloquent
      * Rules for project
      * @var array
      */
+    public static $updateRules = array(
+        'name' => 'required|max:100|unique:projects,name',
+        'repository' => 'max:500|url',
+        'description' => ''
+    );
+
+    /**
+     * Rules for project
+     * @var array
+     */
     public static $rules = array(
         'name' => 'required|max:100|unique:projects',
         'repository' => 'max:500|url',
         'description' => ''
     );
+
+    public static function getRules($update)
+    {
+        if (is_null($update))
+        {
+            return static::$rules;
+        }
+        static::$updateRules['name'] .= ','.Input::get('name').',name';
+        return static::$updateRules;
+    }
 
     /**
      * For example remove admins from writers array

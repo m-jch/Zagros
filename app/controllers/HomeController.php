@@ -4,6 +4,9 @@ class HomeController extends BaseController {
 
     public function getIndex()
     {
-        return View::make('project.list')->with(array());
+        $projects = Project::all();
+        return View::make('project.list')->with(array(
+            'projects' => $projects
+        ));
     }
 }

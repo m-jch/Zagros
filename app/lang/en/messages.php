@@ -7,4 +7,5 @@ return array(
     'new_project_admins' => 'Admins can manage, write and read.',
     'new_project_writers' => 'Writers can write and read.',
     'new_project_readers' => 'Readers can read.',
+    'create_project' => 'Create project was successful.'
 );

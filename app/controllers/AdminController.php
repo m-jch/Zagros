@@ -16,7 +16,7 @@ class AdminController extends BaseController
 
     public function postCreateProject()
     {
-        $v = Validator::make(Input::all(), Project::$rules);
+        $v = Validator::make(Input::all(), Project::getRules(Input::get('update')));
         if ($v->fails())
         {
             return Redirect::back()->withErrors($v)->withInput()->with('message', trans('messages.form_error'));
@@ -29,7 +29,14 @@ class AdminController extends BaseController
         $writers = Project::removeElementFromArray($admins, $writers);
         $readers = Project::removeElementFromArray(array_merge($admins, $writers), $readers);
 
-        $project = new Project;
+        if (!is_null(Input::get('update')))
+        {
+            $project = Project::find(Input::get('project_id'));
+        }
+        else
+        {
+            $project = new Project;
+        }
         $project->name = Input::get('name');
         $project->repository = Input::get('repository');
         $project->description = Input::get('description');
@@ -42,6 +49,12 @@ class AdminController extends BaseController
             $projects_admin_id[$project->project_id] = $project->project_id;
             $user->projects_admin_id = json_encode($projects_admin_id);
             $user->save();
+        }
+
+        if (!is_null(Input::get('update')))
+        {
+            $usres = User::getProjectUsers($project->project_id);
+
         }
 
         foreach ($admins as $admin)
@@ -80,7 +93,26 @@ class AdminController extends BaseController
             }
         }
 
-        return Redirect::action('HomeController@getIndex');
+        return Redirect::action('HomeController@getIndex')->with('message', trans('messages.create_project'));
+    }
+
+    public function getUpdateProject($id = null)
+    {
+        $project = Project::find($id);
+        $admins = User::getGroupIdName('admin', $project->project_id);
+        $writers = User::getGroupIdName('write', $project->project_id);
+        $readers = User::getGroupIdName('read', $project->project_id);
+
+        if ($project)
+        {
+            return View::make('admin.update-project')->with(array(
+                'project' => $project,
+                'admins' => $admins,
+                'writers' => $writers,
+                'readers' => $readers
+            ));
+        }
+        return Redirect::action('HomeController@getIndex')->with('message', trans('messages.form_error'));
     }
 
     public function getCreateUser()
@@ -91,7 +123,7 @@ class AdminController extends BaseController
     public function postUsers()
     {
         $query = Input::get('query');
-        $users = User::select('name', 'user_id')->where('name', 'like', '%'.$query.'%')->where('user_id', '<>', Auth::id())->get()->toJson();
+        $users = User::select('name', 'user_id')->where('name', 'like', '%'.$query.'%')->get()->toJson();
         return $users;
     }
 }

@@ -47,4 +47,28 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		'password' => 'required'
 	);
 
+	/**
+	 * Get id of groups permission
+	 * @param $projectId int
+	 * @return array
+	 */
+	public static function getGroupIdName($group, $projectId)
+	{
+		$users = User::where('projects_'.$group.'_id', 'like', '%"'.$projectId.'":%')->get();
+		$usersArray = array();
+		foreach ($users as $user)
+		{
+			$usersArray[] = array('name' => $user->name, 'user_id' => $user->user_id);
+		}
+		return $usersArray;
+	}
+
+	public static function getProjectUsers($projectId)
+	{
+		$users = User::where('projects_admin_id', 'like', '%"'.$projectId.'":%')
+						->orWhere('projects_write_id', 'like', '%"'.$projectId.'":%')
+						->orWhere('projects_read_id', 'like', '%"'.$projectId.'":%')->get();
+		return $users;
+	}
+
 }
