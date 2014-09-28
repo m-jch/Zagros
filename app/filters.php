@@ -41,6 +41,27 @@ Route::filter('admin', function()
 	}
 });
 
+Route::filter('valid-project-user', function($route)
+{
+	$project = Project::where('url', Route::input('project'))
+						->where('admins', 'like', '%'.Auth::id().'%')
+						->orWhere('writers', 'like', '%'.Auth::id().'%')
+						->orWhere('readers', 'like', '%'.Auth::id().'%')
+						->first();
+	if (!$project)
+	{
+		return Redirect::to('/')->with('message', trans('messages.form_error'));
+	}
+});
+
+Route::filter('admin-project', function()
+{
+	if (!Auth::user()->is_admin)
+	{
+		return Redirect::action('ProjectController@getIndex', Route::input('project'))->with('message', trans('messages.form_error'));
+	}
+});
+
 Route::filter('auth', function()
 {
 	if (Auth::guest())

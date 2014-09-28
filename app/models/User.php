@@ -10,6 +10,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	use UserTrait, RemindableTrait;
 
 	/**
+	 * Add attributes to user model
+	 * @var array
+	 */
+	protected $appends = array('is_admin', 'is_writer', 'is_reader');
+
+	/**
 	 * The database table used by the model.
 	 * @var string
 	 */
@@ -46,6 +52,60 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		'email' => 'required|exists:users',
 		'password' => 'required'
 	);
+
+	/**
+	 * This attribute specified user is admin or not
+	 * @return bool
+	 */
+	public function getIsAdminAttribute()
+	{
+		$project = Project::getProjectByUrl(Route::Input('project'));
+		if ($project)
+		{
+			$admins = explode(',', $project->admins);
+			if (in_array(Auth::id(), $admins))
+			{
+				return $this->attributes['is_admin'] = true;
+			}
+			return $this->attributes['is_admin'] = false;
+		}
+	}
+
+	/**
+	* This attribute specified user is write or not
+	* @return bool
+	*/
+	public function getIsWriterAttribute()
+	{
+		$project = Project::getProjectByUrl(Route::Input('project'));
+		if ($project)
+		{
+			$writers = explode(',', $project->writers);
+			if (in_array(Auth::id(), $writers))
+			{
+				return $this->attributes['is_writer'] = true;
+			}
+			return $this->attributes['is_writer'] = false;
+		}
+	}
+
+	/**
+	* This attribute specified user is reader or not
+	* @return bool
+	*/
+	public function getIsReaderAttribute()
+	{
+		$project = Project::getProjectByUrl(Route::Input('project'));
+		if ($project)
+		{
+			$readers = explode(',', $project->readers);
+			if (in_array(Auth::id(), $readers))
+			{
+				return $this->attributes['is_reader'] = true;
+			}
+			return $this->attributes['is_reader'] = false;
+		}
+	}
 
 	/**
 	 * Get id of groups permission

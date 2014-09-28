@@ -16,10 +16,10 @@ class CreateMilestonesTable extends Migration {
 		{
 			$table->increments('milestone_id');
 			$table->integer('project_id')->unsigned();
-			$table->foreign('project_id')->references('project_id')->on('projects');
+			$table->foreign('project_id')->references('project_id')->on('projects')->onDelete('cascade')->onUpdate('cascade');
 			$table->string('codename', 100);
 			$table->text('description')->nullable();
-			$table->boolean('released');
+			$table->string('release_date', 100)->nullable();
 			$table->string('version', 50)->nullable();
 			$table->timestamps();
 		});

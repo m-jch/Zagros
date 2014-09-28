@@ -34,6 +34,12 @@ class Project extends Eloquent
         'description' => ''
     );
 
+    /**
+     * Get rules for new or update
+     * @param $update string|null
+     * @param $id string|null
+     * @return array
+     */
     public static function getRules($update, $id)
     {
         if (is_null($update))
@@ -42,6 +48,16 @@ class Project extends Eloquent
         }
         static::$updateRules['name'] .= ','.$id.',project_id';
         return static::$updateRules;
+    }
+
+    /**
+     * Access to project by url's
+     * @param $url string
+     * @return mixed|null
+     */
+    public static function getProjectByUrl($url)
+    {
+        return $project = Project::where('url', $url)->first();
     }
 
     /**
@@ -64,5 +80,10 @@ class Project extends Eloquent
             }
         }
         return $array;
+    }
+
+    public function milestones()
+    {
+        return $this->hasMany('Milestone', 'project_id', 'project_id');
     }
 }

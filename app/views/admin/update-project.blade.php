@@ -61,6 +61,8 @@
                     {{Form::hidden('update', 'true')}}
                     {{Form::hidden('project_id', $project->project_id)}}
                     {{Form::submit(trans('layout.update'), array('class' => 'btn btn-primary'))}}
+                    <a href="{{URL::action('AdminController@getDeleteProject', $project->project_id)}}?_token={{csrf_token()}}" class="btn btn-danger"
+                        onclick="if(!confirm('{{trans('messages.delete')}}')) return event.preventDefault();">{{trans('layout.delete_project')}}</a>
                 </div>
             </div>
         {{Form::close()}}

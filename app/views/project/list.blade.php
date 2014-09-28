@@ -5,32 +5,24 @@
 @stop
 
 @section('content')
-    <div class="col-md-6 col-md-offset-0">
-        <h2>Projects</h2>
+    <div class="col-md-6 col-md-offset-3">
+        <h2 class="text-center">Projects</h2>
         @if (Session::has('message'))
-            <p class="text-info">{{Session::get('message')}}</p>
+            <p class="text-info text-center">{{Session::get('message')}}</p>
         @endif
-        <table class="table table-hover  table-responsive">
-            <thead>
-                <tr>
-                    <th>{{trans('layout.name')}}</th>
-                    <th>{{trans('layout.created_at')}}</th>
+        @forelse ($projects as $project)
+            <div>
+                <h3>
+                    <a href="{{URL::action('ProjectController@getIndex', $project->url)}}">{{$project->name}}</a>
                     @if (Auth::user()->admin)
-                        <th>{{trans('layout.edit')}}</th>
-                        <th>{{trans('layout.delete')}}</th>
+                        <small class="pull-right"> <a href="{{URL::action('AdminController@getUpdateProject', $project->project_id)}}">Edit</a></small>
                     @endif
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($projects as $project)
-                    <tr>
-                        <td><a href="">{{$project->name}}</a></td>
-                        <td>{{(new Carbon\Carbon($project->created_at))->diffForHumans(Carbon\Carbon::now())}}</td>
-                        <td><a href="{{URL::action('AdminController@getUpdateProject', $project->project_id)}}"><i class="fa fa-edit"></i></a></td>
-                        <td><a href=""><i class="fa fa-remove"></i></a></td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </h3>
+                <small>{{$project->description}}</small>
+                <hr>
+            </div>
+        @empty
+            <h4 class="text-info text-center">{{trans('messages.no_project')}}</h4>
+        @endforelse
     </div>
 @stop

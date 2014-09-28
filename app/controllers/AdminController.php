@@ -7,6 +7,7 @@ class AdminController extends BaseController
     {
         $this->beforeFilter('auth');
         $this->beforeFilter('admin');
+        $this->beforeFilter('csrf', array('only' => array('getDeleteProject')));
     }
 
     public function getCreateProject()
@@ -19,10 +20,12 @@ class AdminController extends BaseController
         if (!is_null(Input::get('update')))
         {
             $project = Project::find(Input::get('project_id'));
+            $message = trans('messages.create_project');
         }
         else
         {
             $project = new Project;
+            $message = trans('messages.update_project');
         }
 
         if (!$project)
@@ -45,6 +48,7 @@ class AdminController extends BaseController
 
 
         $project->name = Input::get('name');
+        $project->url = Helper::slugify(Input::get('name'));
         $project->repository = Input::get('repository');
         $project->description = Input::get('description');
 
@@ -80,6 +84,17 @@ class AdminController extends BaseController
     public function getCreateUser()
     {
 
+    }
+
+    public function getDeleteProject($id)
+    {
+        $project = Project::find($id);
+        if ($project)
+        {
+            $project->delete();
+            return Redirect::to('/')->with('message', trans('messages.delete_project'));
+        }
+        return Redirect::to('/')->with('message', trans('messages.form_error'));
     }
 
     public function postUsers()

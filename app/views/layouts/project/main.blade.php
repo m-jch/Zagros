@@ -6,20 +6,15 @@
             <div id="header">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1>
-                            {{HTML::image('http://gravatar.com/avatar/'.md5(strtolower(trim(Auth::user()->email))).'?s=60', 'avatar', array('class' => 'avatar'))}}
-                            {{Auth::user()->name}}
-                        </h1>
+                        <h1>{{$project->name}}</h1>
+                        <small>{{$project->description}}</small>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="{{URL::to('/')}}">{{trans('layout.dashboard')}}</a></li>
-                            @if (Auth::user()->admin)
+                            @if (Auth::user()->is_admin)
                                 <li>
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{trans('layout.admin')}} <span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="{{URL::action('AdminController@getCreateUser')}}">{{trans('layout.cnu')}}</a></li>
-                                        <li><a href="{{URL::action('AdminController@getCreateProject')}}">{{trans('layout.cnp')}}</a></li>
-                                        <li class="divider"></li>
-                                        <li><a href="#">{{trans('layout.settings')}}</a></li>
+                                        <li><a href="{{URL::action('ProjectController@getCreate', $project->url)}}">{{trans('layout.cnm')}}</a></li>
                                     </ul>
                                 </li>
                             @endif
