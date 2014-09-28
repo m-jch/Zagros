@@ -16,7 +16,21 @@ class AdminController extends BaseController
 
     public function postCreateProject()
     {
-        $v = Validator::make(Input::all(), Project::getRules(Input::get('update')));
+        if (!is_null(Input::get('update')))
+        {
+            $project = Project::find(Input::get('project_id'));
+        }
+        else
+        {
+            $project = new Project;
+        }
+
+        if (!$project)
+        {
+            return Redirect::action('HomeController@getIndex')->with('message', trans('messages.form_error'));
+        }
+
+        $v = Validator::make(Input::all(), Project::getRules(Input::get('update'), $project->project_id));
         if ($v->fails())
         {
             return Redirect::back()->withErrors($v)->withInput()->with('message', trans('messages.form_error'));
@@ -29,69 +43,16 @@ class AdminController extends BaseController
         $writers = Project::removeElementFromArray($admins, $writers);
         $readers = Project::removeElementFromArray(array_merge($admins, $writers), $readers);
 
-        if (!is_null(Input::get('update')))
-        {
-            $project = Project::find(Input::get('project_id'));
-        }
-        else
-        {
-            $project = new Project;
-        }
+
         $project->name = Input::get('name');
         $project->repository = Input::get('repository');
         $project->description = Input::get('description');
+
+        $project->admins = implode(',', $admins);
+        $project->writers = implode(',', $writers);
+        $project->readers = implode(',', $readers);
+
         $project->save();
-
-        $user = User::find(Auth::id());
-        if ($user)
-        {
-            $projects_admin_id = json_decode($user->projects_admin_id, true);
-            $projects_admin_id[$project->project_id] = $project->project_id;
-            $user->projects_admin_id = json_encode($projects_admin_id);
-            $user->save();
-        }
-
-        if (!is_null(Input::get('update')))
-        {
-            $usres = User::getProjectUsers($project->project_id);
-
-        }
-
-        foreach ($admins as $admin)
-        {
-            $user = User::find($admin);
-            if ($user)
-            {
-                $projects_admin_id = json_decode($user->projects_admin_id, true);
-                $projects_admin_id[$project->project_id] = $project->project_id;
-                $user->projects_admin_id = json_encode($projects_admin_id);
-                $user->save();
-            }
-        }
-
-        foreach ($writers as $writer)
-        {
-            $user = User::find($writer);
-            if ($user)
-            {
-                $projects_write_id = json_decode($user->projects_write_id, true);
-                $projects_write_id[$project->project_id] = $project->project_id;
-                $user->projects_write_id = json_encode($projects_write_id);
-                $user->save();
-            }
-        }
-
-        foreach ($readers as $reader)
-        {
-            $user = User::find($reader);
-            if ($user)
-            {
-                $projects_read_id = json_decode($user->projects_read_id, true);
-                $projects_read_id[$project->project_id] = $project->project_id;
-                $user->projects_read_id = json_encode($projects_read_id);
-                $user->save();
-            }
-        }
 
         return Redirect::action('HomeController@getIndex')->with('message', trans('messages.create_project'));
     }
@@ -99,12 +60,13 @@ class AdminController extends BaseController
     public function getUpdateProject($id = null)
     {
         $project = Project::find($id);
-        $admins = User::getGroupIdName('admin', $project->project_id);
-        $writers = User::getGroupIdName('write', $project->project_id);
-        $readers = User::getGroupIdName('read', $project->project_id);
 
         if ($project)
         {
+            $admins = User::getGroupIdName($project->admins);
+            $writers = User::getGroupIdName($project->writers);
+            $readers = User::getGroupIdName($project->readers);
+
             return View::make('admin.update-project')->with(array(
                 'project' => $project,
                 'admins' => $admins,

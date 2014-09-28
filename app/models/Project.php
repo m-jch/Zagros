@@ -34,13 +34,13 @@ class Project extends Eloquent
         'description' => ''
     );
 
-    public static function getRules($update)
+    public static function getRules($update, $id)
     {
         if (is_null($update))
         {
             return static::$rules;
         }
-        static::$updateRules['name'] .= ','.Input::get('name').',name';
+        static::$updateRules['name'] .= ','.$id.',project_id';
         return static::$updateRules;
     }
 

@@ -52,23 +52,16 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 * @param $projectId int
 	 * @return array
 	 */
-	public static function getGroupIdName($group, $projectId)
+	public static function getGroupIdName($users)
 	{
-		$users = User::where('projects_'.$group.'_id', 'like', '%"'.$projectId.'":%')->get();
+		$users = explode(",", $users);
 		$usersArray = array();
 		foreach ($users as $user)
 		{
-			$usersArray[] = array('name' => $user->name, 'user_id' => $user->user_id);
+			$user = User::find($user);
+			if ($user)
+				$usersArray[] = array('name' => $user->name, 'user_id' => $user->user_id);
 		}
 		return $usersArray;
 	}
-
-	public static function getProjectUsers($projectId)
-	{
-		$users = User::where('projects_admin_id', 'like', '%"'.$projectId.'":%')
-						->orWhere('projects_write_id', 'like', '%"'.$projectId.'":%')
-						->orWhere('projects_read_id', 'like', '%"'.$projectId.'":%')->get();
-		return $users;
-	}
-
 }
