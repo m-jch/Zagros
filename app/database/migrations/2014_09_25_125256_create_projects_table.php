@@ -18,6 +18,9 @@ class CreateProjectsTable extends Migration {
 			$table->string('name', 100);
 			$table->string('repository', 500)->nullable();
 			$table->text('description')->nullable();
+			$table->string('admins', 500)->nullable();
+			$table->string('writers', 500)->nullable();
+			$table->string('readers', 500)->nullable();
 			$table->timestamps();
 		});
 	}
