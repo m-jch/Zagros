@@ -16,7 +16,6 @@ class CreateBugsTable extends Migration {
 		{
 			$table->increments('bug_id');
 			$table->integer('user_id_created')->unsigned();
-			$table->foreign('user_id_created')->references('user_id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 			$table->integer('user_id_assigned')->unsigned();
 			$table->integer('project_id')->unsigned();
 			$table->foreign('project_id')->references('project_id')->on('projects')->onDelete('cascade')->onUpdate('cascade');
@@ -25,7 +24,6 @@ class CreateBugsTable extends Migration {
 			$table->integer('blueprint_id')->unsigned();
 			$table->string('title', 200);
 			$table->text('description')->nullable();
-			$table->smallInteger('type');
 			$table->smallInteger('status');
 			$table->smallInteger('importance');
 			$table->timestamps();

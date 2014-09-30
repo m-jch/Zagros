@@ -4,6 +4,8 @@
     {{trans('layout.zagros')}}::{{trans('layout.bts')}}
 @stop
 
+@section('register-navbar')active @stop
+
 @section('content')
     <div class="col-md-6 col-md-offset-3">
         <h2 class="text-center">{{trans('layout.register')}}</h2>

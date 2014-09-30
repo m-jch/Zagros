@@ -4,6 +4,8 @@
     {{trans('layout.zagros')}}::{{trans('layout.milestones')}}
 @stop
 
+@section('admin-navbar')active @stop
+
 @section('content')
     <div class="col-md-6 col-md-offset-3">
         <h2 class="text-center">{{trans('layout.milestones')}}</h2>

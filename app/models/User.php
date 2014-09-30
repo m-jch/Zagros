@@ -54,7 +54,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	);
 
 	/**
-	 * This attribute specified user is admin or not
+	 * This attribute specified user is admin or not for logined user
 	 * @return bool
 	 */
 	public function getIsAdminAttribute()
@@ -72,7 +72,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	}
 
 	/**
-	* This attribute specified user is write or not
+	* This attribute specified user is write or not for logined user
 	* @return bool
 	*/
 	public function getIsWriterAttribute()
@@ -90,7 +90,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	}
 
 	/**
-	* This attribute specified user is reader or not
+	* This attribute specified user is reader or not for logined user
 	* @return bool
 	*/
 	public function getIsReaderAttribute()

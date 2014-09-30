@@ -62,6 +62,14 @@ Route::filter('admin-project', function()
 	}
 });
 
+Route::filter('not-reader', function()
+{
+	if (Auth::user()->is_reader)
+	{
+		return Redirect::action('ProjectController@getIndex', Route::input('project'))->with('message', trans('messages.form_error'));
+	}
+});
+
 Route::filter('auth', function()
 {
 	if (Auth::guest())

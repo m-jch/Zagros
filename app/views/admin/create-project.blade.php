@@ -4,6 +4,8 @@
     {{trans('layout.zagros')}}::{{trans('layout.admin')}}
 @stop
 
+@section('admin-navbar')active @stop
+
 @section('content')
     <div class="col-md-6 col-md-offset-3">
         <h2 class="text-center">{{trans('layout.cnp')}}</h2>
@@ -73,6 +75,7 @@
                 valueField: 'user_id',
                 displayField: 'name',
                 mode: 'remote',
+                allowFreeEntries: false,
                 renderer: function(data){
                     return '<div class="users">' +
                             '<div class="name">' + data.name + '</div>' +

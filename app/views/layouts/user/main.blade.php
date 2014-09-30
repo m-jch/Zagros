@@ -11,9 +11,9 @@
                             {{Auth::user()->name}}
                         </h1>
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="{{URL::to('/')}}">{{trans('layout.dashboard')}}</a></li>
+                            <li class="@yield('projects-navbar')"><a href="{{URL::to('/')}}">{{trans('layout.projects')}}</a></li>
                             @if (Auth::user()->admin)
-                                <li>
+                                <li class="@yield('admin-navbar')">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{trans('layout.admin')}} <span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a href="{{URL::action('AdminController@getCreateUser')}}">{{trans('layout.cnu')}}</a></li>
@@ -23,7 +23,7 @@
                                     </ul>
                                 </li>
                             @endif
-                            <li>
+                            <li class="@yield('user-navbar')">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{trans('layout.user')}} <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="#">{{trans('layout.settings')}}</a></li>

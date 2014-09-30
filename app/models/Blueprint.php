@@ -1,28 +1,28 @@
 <?php
 
-class Milestone extends Eloquent
+class Blueprint extends Eloquent
 {
     /**
      * The database table used by the model.
      * @var string
      */
-    protected $table = 'milestones';
+    protected $table = 'blueprints';
 
     /**
      * Primary key of users table
      * @var string
      */
-    protected $primaryKey = 'milestone_id';
+    protected $primaryKey = 'blueprint_id';
 
     /**
      * Rules for project
      * @var array
      */
     public static $updateRules = array(
-        'codename' => 'required|max:100|not_in:milestones|unique:milestones,codename',
-        'version' => 'max:50',
-        'release_date' => 'max:100',
-        'description' => ''
+        'title' => 'required|max:200',
+        'status' => 'numeric',
+        'importance' => 'numeric',
+        'description' => '',
     );
 
     /**
@@ -30,10 +30,10 @@ class Milestone extends Eloquent
      * @var array
      */
     public static $rules = array(
-        'codename' => 'required|max:100|not_in:milestones|unique:milestones',
-        'version' => 'max:50',
-        'release_date' => 'max:100',
-        'description' => ''
+        'title' => 'required|max:200',
+        'status' => 'numeric',
+        'importance' => 'numeric',
+        'description' => '',
     );
 
     /**
@@ -48,12 +48,6 @@ class Milestone extends Eloquent
         {
             return static::$rules;
         }
-        static::$updateRules['codename'] .= ','.$id.',milestone_id';
         return static::$updateRules;
-    }
-
-    public function blueprints()
-    {
-        return $this->hasMany('Milestone', 'milestone_id', 'milestone_id');
     }
 }

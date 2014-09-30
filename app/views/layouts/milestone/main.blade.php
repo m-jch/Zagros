@@ -11,13 +11,12 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="@yield('projects-navbar')"><a href="{{URL::to('/')}}">{{trans('layout.projects')}}</a></li>
                             <li class="@yield('milestones-navbar')"><a href="{{URL::action('ProjectController@getIndex', $project->url)}}">{{trans('layout.milestones')}}</a></li>
+                            <li class="@yield('milestone-navbar')"><a href="{{URL::action('MilestoneController@getIndex', array($project->url, $milestone->url))}}">{{$milestone->codename}}</a></li>
                             @if (Auth::user()->is_admin)
-                                <li class="@yield('admin-navbar')">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{trans('layout.admin')}} <span class="caret"></span></a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="{{URL::action('ProjectController@getCreate', $project->url)}}">{{trans('layout.cnm')}}</a></li>
-                                    </ul>
-                                </li>
+                                <li class="@yield('blueprint-navbar')"><a href="{{URL::action('MilestoneController@getCreateBlueprint', array($project->url, $milestone->url))}}">{{trans('layout.new_blueprint')}}</a></li>
+                            @endif
+                            @if (!Auth::user()->is_reader)
+                                <li class="@yield('bug-navbar')"><a href="{{URL::action('MilestoneController@getCreateBug', array($project->url, $milestone->url))}}">{{trans('layout.new_bug')}}</a></li>
                             @endif
                             <li class="@yield('user-navbar')">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{trans('layout.user')}} <span class="caret"></span></a>

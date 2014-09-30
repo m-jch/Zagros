@@ -15,6 +15,8 @@ class CreateBluprintsTable extends Migration {
 		Schema::create('blueprints', function(Blueprint $table)
 		{
 			$table->increments('blueprint_id');
+			$table->integer('user_id_created')->unsigned();
+			$table->integer('user_id_assigned')->unsigned()->nullable();
 			$table->integer('project_id')->unsigned();
 			$table->foreign('project_id')->references('project_id')->on('projects')->onDelete('cascade')->onUpdate('cascade');
 			$table->integer('milestone_id')->unsigned();
@@ -22,6 +24,7 @@ class CreateBluprintsTable extends Migration {
 			$table->string('title', 200);
 			$table->text('description')->nullable();
 			$table->smallInteger('status');
+			$table->smallInteger('importance');
 			$table->timestamps();
 		});
 	}
