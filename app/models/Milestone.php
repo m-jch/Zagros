@@ -54,6 +54,6 @@ class Milestone extends Eloquent
 
     public function blueprints()
     {
-        return $this->hasMany('Milestone', 'milestone_id', 'milestone_id');
+        return $this->hasMany('Blueprint', 'milestone_id', 'milestone_id');
     }
 }

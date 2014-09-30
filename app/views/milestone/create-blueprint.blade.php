@@ -23,14 +23,14 @@
             <div class="form-group">
                 {{Form::label('status', trans('layout.status'), array('class' => 'col-sm-2 control-label'))}}
                 <div class="col-sm-10">
-                    {{Form::select('status', Helper::getBlueprintsStatus(), 0, array('class' => 'form-control'))}}
+                    {{Form::select('status', Helper::getBlueprintStatus(), 0, array('class' => 'form-control'))}}
                     {{$errors->first('status', '<small class="text-warning">:message</small>')}}
                 </div>
             </div>
             <div class="form-group">
                 {{Form::label('importance', trans('layout.importance'), array('class' => 'col-sm-2 control-label'))}}
                 <div class="col-sm-10">
-                    {{Form::select('importance', Helper::getBlueprintsImportance(), 2, array('class' => 'form-control'))}}
+                    {{Form::select('importance', Helper::getBlueprintImportance(), 2, array('class' => 'form-control'))}}
                     {{$errors->first('importance', '<small class="text-warning">:message</small><br>')}}
                 </div>
             </div>

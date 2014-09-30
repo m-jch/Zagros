@@ -15,7 +15,10 @@ class MilestoneController extends BaseController
     public function getIndex($projectUrl, $milestoneUrl)
     {
         $project = Project::getProjectByUrl($projectUrl);
-        $milestone = Milestone::where('url', $milestoneUrl)->first();
+        $milestone = Milestone::where('url', $milestoneUrl)->with(array('blueprints' => function($query)
+        {
+            $query->orderBy('importance', 'asc')->orderBy('status', 'asc')->get();
+        }))->first();
 
         return View::make('milestone.list')->with(array(
             'project' => $project,
