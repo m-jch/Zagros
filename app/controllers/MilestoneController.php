@@ -7,7 +7,8 @@ class MilestoneController extends BaseController
     {
         $this->beforeFilter('auth');
         $this->beforeFilter('valid-project-user');
-        $this->beforeFilter('admin-project', array('only' => array('getCreateBlueprint')));
+        $this->beforeFilter('valid-milestone');
+        $this->beforeFilter('admin-project', array('only' => array('getCreateBlueprint', 'postCreateBlueprint')));
         $this->beforeFilter('not-reader', array('only' => array('getCreateBug')));
         $this->beforeFilter('csrf', array('only' => array()));
     }
@@ -17,7 +18,7 @@ class MilestoneController extends BaseController
         $project = Project::getProjectByUrl($projectUrl);
         $milestone = Milestone::where('url', $milestoneUrl)->with(array('blueprints' => function($query)
         {
-            $query->orderBy('importance', 'asc')->orderBy('status', 'asc')->get();
+            $query->orderBy('importance', 'asc')->orderBy('status', 'asc')->with('userAssigned')->get();
         }))->first();
 
         return View::make('milestone.list')->with(array(
@@ -78,6 +79,11 @@ class MilestoneController extends BaseController
     }
 
     public function getCreateBug($projectUrl, $milestoneUrl)
+    {
+
+    }
+
+    public function getBlueprint($projectUrl, $milestoneUrl, $blueprintId)
     {
 
     }

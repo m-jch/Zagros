@@ -50,4 +50,9 @@ class Blueprint extends Eloquent
         }
         return static::$updateRules;
     }
+
+    public function userAssigned()
+    {
+        return $this->belongsTo('User', 'user_id_assigned', 'user_id');
+    }
 }
