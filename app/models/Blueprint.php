@@ -51,8 +51,19 @@ class Blueprint extends Eloquent
         return static::$updateRules;
     }
 
+    /**
+     * Access to user assigned to a blueprint
+     */
     public function userAssigned()
     {
         return $this->belongsTo('User', 'user_id_assigned', 'user_id');
+    }
+
+    /**
+     * Access to user craeted a blueprint
+     */
+    public function userCreated()
+    {
+        return $this->belongsTo('User', 'user_id_created', 'user_id');
     }
 }

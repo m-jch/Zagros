@@ -24,3 +24,6 @@ body {
     -moz-border-radius: 50%;
 }
 .navbar-nav li.active>a { background: #F8F8F8 }
+.table-clear>thead>tr>th, .table-clear>tbody>tr>th, .table-clear>tfoot>tr>th, .table-clear>thead>tr>td, .table-clear>tbody>tr>td, .table-clear>tfoot>tr>td {
+    border-top: none;
+}

@@ -52,6 +52,16 @@ class Milestone extends Eloquent
         return static::$updateRules;
     }
 
+    /**
+     * Access to milestone by url's
+     * @param $url string
+     * @return mixed|null
+     */
+    public static function getMilestoneByUrl($url)
+    {
+        return Milestone::where('url', $url)->first();
+    }
+
     public function blueprints()
     {
         return $this->hasMany('Blueprint', 'milestone_id', 'milestone_id');

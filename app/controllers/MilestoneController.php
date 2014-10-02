@@ -78,12 +78,58 @@ class MilestoneController extends BaseController
         return Redirect::action('MilestoneController@getIndex', array($project->url, $milestone->url))->with('message', $message);
     }
 
-    public function getCreateBug($projectUrl, $milestoneUrl)
+    public function getUpdateBlueprint($projectUrl, $milestoneUrl, $blueprintId)
     {
+        $project = Project::getProjectByUrl($projectUrl);
+        $milestone = Milestone::getMilestoneByUrl($milestoneUrl);
+        $blueprint = Blueprint::where('blueprint_id', $blueprintId)->with('userAssigned', 'userCreated')->first();
 
+        if (!$blueprint)
+        {
+            return Redirect::action('MilestoneController@getIndex', array($project->url, $milestone->url))->with('message', trans('messages.form_error'));
+        }
+
+        return View::make('milestone.update-blueprint')->with(array(
+            'project' => $project,
+            'milestone' => $milestone,
+            'blueprint' => $blueprint
+        ));
+    }
+
+    public function getDeleteBlueprint($projectUrl, $milestoneUrl, $blueprintId)
+    {
+        $project = Project::getProjectByUrl($projectUrl);
+        $milestone = Milestone::getMilestoneByUrl($milestoneUrl);
+        $blueprint = Blueprint::find($blueprintId);
+
+        if ($blueprint)
+        {
+            $blueprint->delete();
+            return Redirect::action('MilestoneController@getIndex', array($project->url, $milestone->url))->with('message', trans('messages.delete_blueprint'));
+        }
+
+        return Redirect::action('MilestoneController@getIndex', array($project->url, $milestone->url))->with('message', trans('messages.form_error'));
     }
 
     public function getBlueprint($projectUrl, $milestoneUrl, $blueprintId)
+    {
+        $project = Project::getProjectByUrl($projectUrl);
+        $milestone = Milestone::getMilestoneByUrl($milestoneUrl);
+        $blueprint = Blueprint::where('blueprint_id', $blueprintId)->with('userAssigned', 'userCreated')->first();
+
+        if (!$blueprint)
+        {
+            return Redirect::action('MilestoneController@getIndex', array($project->url, $milestone->url))->with('message', trans('messages.form_error'));
+        }
+
+        return View::make('milestone.blueprint')->with(array(
+            'project' => $project,
+            'milestone' => $milestone,
+            'blueprint' => $blueprint
+        ));
+    }
+
+    public function getCreateBug($projectUrl, $milestoneUrl)
     {
 
     }
