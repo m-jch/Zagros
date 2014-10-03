@@ -66,4 +66,10 @@ class Blueprint extends Eloquent
     {
         return $this->belongsTo('User', 'user_id_created', 'user_id');
     }
+
+    public function events()
+    {
+        return $this->hasMany('Events', 'blueprint_id', 'blueprint_id');
+    }
+
 }

@@ -4,7 +4,7 @@
     {{trans('layout.zagros')}}::{{$milestone->codename}}
 @stop
 
-@section('blueprint-navbar')active @stop
+@section('milestone-navbar')active @stop
 
 @section('content')
     <div class="col-md-12">
@@ -43,8 +43,8 @@
                         </tr>
                         <tr>
                             <td><b>Status:</b></td>
-                            <td style="color: {{Helper::getBlueprintStatusColor($blueprint->importance)}}">
-                                {{Helper::getBlueprintStatus($blueprint->importance)}}
+                            <td style="color: {{Helper::getBlueprintStatusColor($blueprint->status)}}">
+                                {{Helper::getBlueprintStatus($blueprint->status)}}
                             </td>
                         </tr>
                         <tr>
@@ -54,9 +54,28 @@
                     </tbody>
                 </table>
             </div>
-            @if (!Auth::user()->is_reader)
-                <a class="pull-right btn btn-default" href="{{URL::action('MilestoneController@getUpdateBlueprint', array($project->url, $milestone->url, $blueprint->blueprint_id))}}">Update</a>
-            @endif
+            <div class="col-md-12">
+                @if (Auth::user()->is_admin)
+                    <a class="pull-right btn btn-default" href="{{URL::action('MilestoneController@getUpdateBlueprint', array($project->url, $milestone->url, $blueprint->blueprint_id))}}">Update</a>
+                @endif
+            </div>
+            <div class="col-md-12">
+                @foreach ($blueprint->events as $event)
+                    <div class="event">
+                        <h5>{{User::find($event->user_id)->name}} in {{(new Carbon\Carbon($event->created_at))->diffForHumans(Carbon\Carbon::now())}}</h5>
+                        @if (!empty($event->changes))
+                            <p><b>Changes:</b></p>
+                            <ul class="changes">
+                                {{$event->changes}}
+                            </ul>
+                        @endif
+                        @if (!empty($event->description))
+                            <p><b>Description:</b></p>
+                            <p class="description">{{$event->description}}</p>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
         </div>
         <div class="col-md-6">
             <h4>Related bugs</h4>
