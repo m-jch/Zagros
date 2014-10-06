@@ -3,6 +3,65 @@
 class Helper
 {
 
+    public static function getBugImportance($index = null)
+    {
+        $bugImportance = array(
+            0 => 'Critical',
+            1 => 'High',
+            2 => 'Medium',
+            3 => 'Low',
+        );
+
+        if (is_null($index))
+            return $bugImportance;
+        else
+            return $bugImportance[$index];
+    }
+
+    public static function getBugImportanceColor($index)
+    {
+        $colors = array(
+            'Critical' => '#FF3A3A',
+            'High'     => '#990D0D',
+            'Medium'   => '#007C1E',
+            'Low'      => '#000'
+        );
+
+        return $colors[self::getBugImportance($index)];
+    }
+
+    public static function getBugStatus($index = null)
+    {
+        $bugsStatus = array(
+            0 => 'New',
+            1 => 'Confirmed',
+            2 => 'In Progress',
+            3 => 'Completed',
+            4 => 'On Hold',
+            5 => 'Rejected'
+        );
+
+        if (is_null($index))
+            return $bugsStatus;
+        else
+            return $bugsStatus[$index];
+
+    }
+
+    public static function getBugStatusColor($index)
+    {
+        $colors = array(
+            'New'         => '#414141',
+            'Confirmed'   => '#002847',
+            'In Progress' => '#00467E',
+            'Completed'   => '#007E00',
+            'On Hold'     => '#000',
+            'Rejected'    => '#8A8A8A'
+        );
+
+        return $colors[self::getBugStatus($index)];
+    }
+
     public static function getBlueprintImportance($index = null)
     {
         $blueprintImportance = array(
@@ -33,15 +92,15 @@ class Helper
     public static function getBlueprintStatus($index = null)
     {
         $blueprintsStatus = array(
-            0 => 'Not Started',
-            1 => 'On Hold',
+            0 => 'Unknown',
+            1 => 'Not Started',
             2 => 'Started',
-            3 => 'In Proggress',
+            3 => 'In Progress',
             4 => 'Good Progress',
             5 => 'Beta Available',
             6 => 'Implemented',
-            7 => 'Rejected',
-            8 => 'Unknown'
+            7 => 'On Hold',
+            8 => 'Rejected',
         );
 
         if (is_null($index))
@@ -56,7 +115,7 @@ class Helper
         $colors = array(
             'Not Started'    => '#414141',
             'Started'        => '#002847',
-            'In Proggress'   => '#00467E',
+            'In Progress'   => '#00467E',
             'Good Progress'  => '#0B79D1',
             'Beta Available' => '#888302',
             'Implemented'    => '#007E00',

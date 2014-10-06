@@ -18,7 +18,10 @@ class MilestoneController extends BaseController
         $project = Project::getProjectByUrl($projectUrl);
         $milestone = Milestone::where('url', $milestoneUrl)->with(array('blueprints' => function($query)
         {
-            $query->orderBy('importance', 'asc')->orderBy('status', 'asc')->with('userAssigned')->get();
+            $query->orderBy('status', 'asc')->orderBy('importance', 'asc')->with('userAssigned')->get();
+        }, 'bugs' => function($query)
+        {
+            $query->orderBy('status', 'asc')->orderBy('importance', 'asc')->with('userAssigned')->get();
         }))->first();
 
         return View::make('milestone.list')->with(array(
@@ -120,14 +123,14 @@ class MilestoneController extends BaseController
     {
         $project = Project::getProjectByUrl($projectUrl);
         $milestone = Milestone::getMilestoneByUrl($milestoneUrl);
-        $blueprint = Blueprint::where('blueprint_id', $blueprintId)->with('userAssigned', 'userCreated', 'events')->first();
+        $blueprint = Blueprint::where('blueprint_id', $blueprintId)->with('userAssigned', 'userCreated', 'events', 'bugs')->first();
 
         if (!$blueprint)
         {
             return Redirect::action('MilestoneController@getIndex', array($project->url, $milestone->url))->with('message', trans('messages.form_error'));
         }
 
-        return View::make('milestone.blueprint')->with(array(
+        return View::make('milestone.blueprint.blueprint')->with(array(
             'project' => $project,
             'milestone' => $milestone,
             'blueprint' => $blueprint
@@ -171,6 +174,81 @@ class MilestoneController extends BaseController
 
     public function getCreateBug($projectUrl, $milestoneUrl)
     {
+        $project = Project::getProjectByUrl($projectUrl);
+        $milestone = Milestone::getMilestoneByUrl($milestoneUrl)->first();
+
+        return View::make('milestone.bug.create-bug')->with(array(
+            'project' => $project,
+            'milestone' => $milestone
+        ));
+    }
+
+    public function postCreateBug($projectUrl, $milestoneUrl)
+    {
+        $project = Project::getProjectByUrl($projectUrl);
+        $milestone = Milestone::getMilestoneByUrl($milestoneUrl);
+
+        if (!is_null(Input::get('update')))
+        {
+            $bug = Bug::find(Input::get('bug_id'));
+            $oldBug = $bug->toArray();
+            $message = trans('messages.update_bug');
+        }
+        else
+        {
+            $bug = new Bug;
+            $bug->user_id_created = Auth::id();
+            $message = trans('messages.create_bug');
+        }
+
+        if (!$bug)
+        {
+            return Redirect::action('MilestoneController@getIndex', array($project->url, $milestone->url))->with('message', trans('messages.form_error'));
+        }
+
+        $v = Validator::make(Input::all(), Bug::getRules(Input::get('update'), $bug->bug_id));
+        if ($v->fails())
+        {
+            return Redirect::back()->withErrors($v)->withInput()->with('message', trans('messages.form_error'));
+        }
+
+        $bug->title = Input::get('title');
+        $bug->description = Input::get('description');
+        $bug->user_id_assigned = (null !== Input::get('user_id_assigned')) ? Input::get('user_id_assigned')[0] : null;
+        $bug->status = Input::get('status');
+        $bug->importance = Input::get('importance');
+        $bug->project_id = $project->project_id;
+        $bug->blueprint_id = (null !== Input::get('blueprint_id')) ? Input::get('blueprint_id')[0] : null;
+
+        $milestone->bugs()->save($bug);
+        if (!is_null(Input::get('update')))
+        {
+            $this->updatedBug($oldBug, $bug, $project->project_id, $milestone->milestone_id, Input::get('description_update'));
+        }
+
+        return Redirect::action('MilestoneController@getBug', array($project->url, $milestone->url, $bug->bug_id))->with('message', $message);
+    }
+
+    public function getBug($projectUrl, $milestoneUrl, $bugId)
+    {
+        $project = Project::getProjectByUrl($projectUrl);
+        $milestone = Milestone::getMilestoneByUrl($milestoneUrl);
+        $bug = Bug::where('bug_id', $bugId)->with('userAssigned', 'userCreated', 'events', 'parent')->first();
+
+        if (!$bug)
+        {
+            return Redirect::action('MilestoneController@getIndex', array($project->url, $milestone->url))->with('message', trans('messages.form_error'));
+        }
+
+        return View::make('milestone.bug.bug')->with(array(
+            'project' => $project,
+            'milestone' => $milestone,
+            'bug' => $bug
+        ));
+    }
+
+    public function getUpdateBug($projectUrl, $milestoneUrl, $bugId)
+    {
 
     }
 
@@ -190,5 +268,13 @@ class MilestoneController extends BaseController
         }
 
         return $usersModels;
+    }
+
+    public function postBlueprints($projectUrl, $milestoneUrl)
+    {
+        $project = Project::getProjectByUrl($projectUrl);
+        $milestone = Milestone::where('url', $milestoneUrl)->with('blueprints')->first();
+
+        return $milestone->blueprints;
     }
 }

@@ -20,7 +20,7 @@
             <table class="table table-hover table-condensed">
                 <thead>
                     <tr>
-                        <th>Blueprint</th>
+                        <th>Blueprint title</th>
                         <th>Assignee</th>
                         <th>Importance</th>
                         <th>Status</th>
@@ -43,6 +43,44 @@
                             <td>
                                 <span style="color: {{Helper::getBlueprintStatusColor($blueprint->status)}}">
                                     {{Helper::getBlueprintStatus($blueprint->status)}}
+                                <span>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <h3 class="text-center">Bugs</h3>
+        <div class="table-responsive">
+            <table class="table table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th>Bug title</th>
+                        <th>Assignee</th>
+                        <th>Importance</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($milestone->bugs as $bug)
+                        <tr>
+                            <td><a href="{{URL::action('MilestoneController@getBug', array($project->url, $milestone->url, $bug->bug_id))}}">{{$bug->title}}</a></td>
+                            <td>
+                                @if (isset($bug->user_assigned->name))
+                                    {{$bug->user_assigned->name}}
+                                @endif
+                            </td>
+                            <td>
+                                <span style="color: {{Helper::getBugImportanceColor($bug->importance)}}">
+                                    {{Helper::getBugImportance($bug->importance)}}
+                                </span>
+                            </td>
+                            <td>
+                                <span style="color: {{Helper::getBugStatusColor($bug->status)}}">
+                                    {{Helper::getBugStatus($bug->status)}}
                                 <span>
                             </td>
                         </tr>

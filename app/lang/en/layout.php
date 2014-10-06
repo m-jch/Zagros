@@ -24,6 +24,7 @@ return array(
     'cnu' => 'Create new user',
     'cnm' => 'Create new milestone',
     'cnb' => 'Create new bluprint',
+    'cnbug' => 'Create new bug',
     'name' => 'Name',
     'created_at' => 'Created at',
     'create' => 'Create',
@@ -53,5 +54,6 @@ return array(
     'title' => 'Title',
     'status' => 'Status',
     'importance' => 'Importance',
-    'assign' => 'Assign'
+    'assign' => 'Assign',
+    'parent' => 'Parent'
 );

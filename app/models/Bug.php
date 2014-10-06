@@ -1,18 +1,18 @@
 <?php
 
-class Blueprint extends Eloquent
+class Bug extends Eloquent
 {
     /**
      * The database table used by the model.
      * @var string
      */
-    protected $table = 'blueprints';
+    protected $table = 'bugs';
 
     /**
      * Primary key of users table
      * @var string
      */
-    protected $primaryKey = 'blueprint_id';
+    protected $primaryKey = 'bug_id';
 
     /**
      * Rules for project
@@ -67,19 +67,13 @@ class Blueprint extends Eloquent
         return $this->belongsTo('User', 'user_id_created', 'user_id');
     }
 
-    /**
-     * Access to events of a blueprint
-     */
     public function events()
     {
-        return $this->hasMany('Events', 'blueprint_id', 'blueprint_id');
+        return $this->hasMany('Events', 'bug_id', 'bug_id');
     }
 
-    /**
-     * Access to bugs of a blueprint
-     */
-    public function bugs()
+    public function parent()
     {
-        return $this->hasMany('Bug', 'blueprint_id', 'blueprint_id');
+        return $this->belongsTo('Blueprint', 'blueprint_id', 'blueprint_id');
     }
 }

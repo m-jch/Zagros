@@ -62,8 +62,19 @@ class Milestone extends Eloquent
         return Milestone::where('url', $url)->first();
     }
 
+    /**
+     * Access to blueprints of a milestone
+     */
     public function blueprints()
     {
         return $this->hasMany('Blueprint', 'milestone_id', 'milestone_id');
+    }
+
+    /**
+     * Access to bugs of a milestone
+     */
+    public function bugs()
+    {
+        return $this->hasMany('Bug', 'milestone_id', 'milestone_id');
     }
 }
