@@ -1,7 +1,7 @@
 @extends('layouts.milestone.main')
 
 @section('title')
-    {{trans('layout.zagros')}}::{{$milestone->codename}}
+    {{trans('layout.zagros')}}::{{$project->milestone->codename}}
 @stop
 
 @section('milestone-navbar')active @stop
@@ -12,32 +12,32 @@
         @if (Session::has('message'))
             <p class="text-info text-center">{{Session::get('message')}}</p>
         @endif
-        {{Form::open(array('action' => array('MilestoneController@postCreateBlueprint', $project->url, $milestone->url), 'class' => 'form-horizontal', 'role' => 'form'))}}
+        {{Form::open(array('action' => array('MilestoneController@postCreateBlueprint', $project->url, $project->milestone->url), 'class' => 'form-horizontal', 'role' => 'form'))}}
             <div class="form-group">
                 {{Form::label('title', trans('layout.title'), array('class' => 'col-sm-2 control-label'))}}
                 <div class="col-sm-10">
-                    {{Form::text('title', $blueprint->title, array('class' => 'form-control', 'placeholder' => trans('layout.title'), 'id' => 'title'))}}
+                    {{Form::text('title', $project->milestone->blueprint->title, array('class' => 'form-control', 'placeholder' => trans('layout.title'), 'id' => 'title'))}}
                     {{$errors->first('title', '<small class="text-warning">:message</small>')}}
                 </div>
             </div>
             <div class="form-group">
                 {{Form::label('status', trans('layout.status'), array('class' => 'col-sm-2 control-label'))}}
                 <div class="col-sm-10">
-                    {{Form::select('status', Helper::getBlueprintStatus(), $blueprint->status, array('class' => 'form-control'))}}
+                    {{Form::select('status', Helper::getBlueprintStatus(), $project->milestone->blueprint->status, array('class' => 'form-control'))}}
                     {{$errors->first('status', '<small class="text-warning">:message</small>')}}
                 </div>
             </div>
             <div class="form-group">
                 {{Form::label('importance', trans('layout.importance'), array('class' => 'col-sm-2 control-label'))}}
                 <div class="col-sm-10">
-                    {{Form::select('importance', Helper::getBlueprintImportance(), $blueprint->importance, array('class' => 'form-control'))}}
+                    {{Form::select('importance', Helper::getBlueprintImportance(), $project->milestone->blueprint->importance, array('class' => 'form-control'))}}
                     {{$errors->first('importance', '<small class="text-warning">:message</small><br>')}}
                 </div>
             </div>
             <div class="form-group">
                 {{Form::label('desc', trans('layout.desc'), array('class' => 'col-sm-2 control-label'))}}
                 <div class="col-sm-10">
-                    {{Form::textarea('description', $blueprint->description, array('class' => 'form-control', 'placeholder' => trans('layout.desc'), 'id' => 'desc'))}}
+                    {{Form::textarea('description', str_replace('<br />', '', $project->milestone->blueprint->description), array('class' => 'form-control', 'placeholder' => trans('layout.desc'), 'id' => 'desc'))}}
                     {{$errors->first('description', '<small class="text-warning">:message</small>')}}
                 </div>
             </div>
@@ -60,10 +60,10 @@
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10 text-center">
                     {{Form::hidden('update', 'true')}}
-                    {{Form::hidden('blueprint_id', $blueprint->blueprint_id)}}
+                    {{Form::hidden('blueprint_id', $project->milestone->blueprint->blueprint_id)}}
                     {{Form::submit(trans('layout.update'), array('class' => 'btn btn-primary'))}}
                     @if (Auth::user()->is_admin)
-                        <a href="{{URL::action('MilestoneController@getDeleteBlueprint', array($project->url, $milestone->url, $blueprint->blueprint_id))}}?_token={{csrf_token()}}" class="btn btn-danger"
+                        <a href="{{URL::action('MilestoneController@getDeleteBlueprint', array($project->url, $project->milestone->url, $project->milestone->blueprint->blueprint_id))}}?_token={{csrf_token()}}" class="btn btn-danger"
                             onclick="if(!confirm('{{trans('messages.delete')}}')) return event.preventDefault();">{{trans('layout.delete_blueprint')}}</a>
                     @endif
                 </div>
@@ -76,9 +76,9 @@
     <script>
         $(function() {
             var admins = $('#assign').magicSuggest({
-                data: '{{URL::action('MilestoneController@postUsers', array($project->url, $milestone->url))}}',
-                @if (isset($blueprint->user_assigned->user_id))
-                    value: [{user_id: "{{$blueprint->user_assigned->user_id}}", name: "{{$blueprint->user_assigned->name}}"}],
+                data: '{{URL::action('MilestoneController@postUsers', array($project->url, $project->milestone->url))}}',
+                @if (isset($project->milestone->blueprint->user_assigned->user_id))
+                    value: [{user_id: "{{$project->milestone->blueprint->user_assigned->user_id}}", name: "{{$project->milestone->blueprint->user_assigned->name}}"}],
                 @endif
                 valueField: 'user_id',
                 displayField: 'name',

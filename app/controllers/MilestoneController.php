@@ -15,36 +15,40 @@ class MilestoneController extends BaseController
 
     public function getIndex($projectUrl, $milestoneUrl)
     {
-        $project = Project::getProjectByUrl($projectUrl);
-        $milestone = Milestone::where('url', $milestoneUrl)->with(array('blueprints' => function($query)
+        $project = Project::where('url', $projectUrl)->with(array('milestone' => function($query) use($milestoneUrl)
         {
-            $query->orderBy('status', 'asc')->orderBy('importance', 'asc')->with('userAssigned')->get();
-        }, 'bugs' => function($query)
-        {
-            $query->orderBy('status', 'asc')->orderBy('importance', 'asc')->with('userAssigned')->get();
+            $query->where('url', $milestoneUrl)->with(array('blueprints' => function($query)
+            {
+                $query->orderBy('status', 'asc')->orderBy('importance', 'asc')->with('userAssigned', 'userCreated')->get();
+            }, 'bugs' => function($query)
+            {
+                $query->orderBy('status', 'asc')->orderBy('importance', 'asc')->with('userAssigned', 'userCreated')->get();
+            }))->get();
         }))->first();
 
         return View::make('milestone.list')->with(array(
-            'project' => $project,
-            'milestone' => $milestone
+            'project' => $project
         ));
     }
 
     public function getCreateBlueprint($projectUrl, $milestoneUrl)
     {
-        $project = Project::getProjectByUrl($projectUrl);
-        $milestone = Milestone::where('url', $milestoneUrl)->first();
+        $project = Project::where('url', $projectUrl)->with(array('milestone' => function($query) use($milestoneUrl)
+        {
+            $query->where('url', $milestoneUrl)->get();
+        }))->first();
 
-        return View::make('milestone.create-blueprint')->with(array(
-            'project' => $project,
-            'milestone' => $milestone
+        return View::make('milestone.blueprint.create-blueprint')->with(array(
+            'project' => $project
         ));
     }
 
     public function postCreateBlueprint($projectUrl, $milestoneUrl)
     {
-        $project = Project::getProjectByUrl($projectUrl);
-        $milestone = Milestone::where('url', $milestoneUrl)->first();
+        $project = Project::where('url', $projectUrl)->with(array('milestone' => function($query) use($milestoneUrl)
+        {
+            $query->where('url', $milestoneUrl)->get();
+        }))->first();
 
         if (!is_null(Input::get('update')))
         {
@@ -71,69 +75,72 @@ class MilestoneController extends BaseController
         }
 
         $blueprint->title = Input::get('title');
-        $blueprint->description = Input::get('description');
+        $blueprint->description = nl2br(Input::get('description'));
         $blueprint->user_id_assigned = (null !== Input::get('user_id_assigned')) ? Input::get('user_id_assigned')[0] : null;
         $blueprint->status = Input::get('status');
         $blueprint->importance = Input::get('importance');
         $blueprint->project_id = $project->project_id;
 
-        $milestone->blueprints()->save($blueprint);
+        $project->milestone->blueprints()->save($blueprint);
         if (!is_null(Input::get('update')))
         {
-            $this->updatedBlueprint($oldBlueprint, $blueprint, $project->project_id, $milestone->milestone_id, Input::get('description_update'));
+            $this->updatedBlueprint($oldBlueprint, $blueprint, $project->project_id, $project->milestone->milestone_id, Input::get('description_update'));
         }
 
-        return Redirect::action('MilestoneController@getBlueprint', array($project->url, $milestone->url, $blueprint->blueprint_id))->with('message', $message);
+        return Redirect::action('MilestoneController@getBlueprint', array($project->url, $project->milestone->url, $blueprint->blueprint_id))->with('message', $message);
     }
 
     public function getUpdateBlueprint($projectUrl, $milestoneUrl, $blueprintId)
     {
-        $project = Project::getProjectByUrl($projectUrl);
-        $milestone = Milestone::getMilestoneByUrl($milestoneUrl);
-        $blueprint = Blueprint::where('blueprint_id', $blueprintId)->with('userAssigned', 'userCreated')->first();
-
-        if (!$blueprint)
+        $project = Project::where('url', $projectUrl)->with(array('milestone' => function($query) use($milestoneUrl, $blueprintId)
         {
-            return Redirect::action('MilestoneController@getIndex', array($project->url, $milestone->url))->with('message', trans('messages.form_error'));
+            $query->where('url', $milestoneUrl)->with(array('blueprint' => function($query) use($blueprintId)
+            {
+                $query->find($blueprintId);
+            }))->get();
+        }))->first();
+
+        if (!$project->milestone->blueprint)
+        {
+            return Redirect::action('MilestoneController@getIndex', array($project->url, $project->milestone->url))->with('message', trans('messages.form_error'));
         }
 
-        return View::make('milestone.update-blueprint')->with(array(
-            'project' => $project,
-            'milestone' => $milestone,
-            'blueprint' => $blueprint
+        return View::make('milestone.blueprint.update-blueprint')->with(array(
+            'project' => $project
         ));
     }
 
     public function getDeleteBlueprint($projectUrl, $milestoneUrl, $blueprintId)
     {
-        $project = Project::getProjectByUrl($projectUrl);
-        $milestone = Milestone::getMilestoneByUrl($milestoneUrl);
         $blueprint = Blueprint::find($blueprintId);
 
         if ($blueprint)
         {
             $blueprint->delete();
-            return Redirect::action('MilestoneController@getIndex', array($project->url, $milestone->url))->with('message', trans('messages.delete_blueprint'));
+            Events::where('blueprint_id', $blueprintId)->delete();
+            return Redirect::action('MilestoneController@getIndex', array($projectUrl, $milestoneUrl))->with('message', trans('messages.delete_blueprint'));
         }
 
-        return Redirect::action('MilestoneController@getIndex', array($project->url, $milestone->url))->with('message', trans('messages.form_error'));
+        return Redirect::action('MilestoneController@getIndex', array($projectUrl, $milestoneUrl))->with('message', trans('messages.form_error'));
     }
 
     public function getBlueprint($projectUrl, $milestoneUrl, $blueprintId)
     {
-        $project = Project::getProjectByUrl($projectUrl);
-        $milestone = Milestone::getMilestoneByUrl($milestoneUrl);
-        $blueprint = Blueprint::where('blueprint_id', $blueprintId)->with('userAssigned', 'userCreated', 'events', 'bugs')->first();
-
-        if (!$blueprint)
+        $project = Project::where('url', $projectUrl)->with(array('milestone' => function($query) use($milestoneUrl, $blueprintId)
         {
-            return Redirect::action('MilestoneController@getIndex', array($project->url, $milestone->url))->with('message', trans('messages.form_error'));
+            $query->where('url', $milestoneUrl)->with(array('blueprint' => function($query) use($blueprintId)
+            {
+                $query->where('blueprint_id', $blueprintId)->with('userAssigned', 'userCreated', 'events', 'bugs')->get();
+            }))->get();
+        }))->first();
+
+        if (!isset($project->milestone->blueprint))
+        {
+            return Redirect::action('MilestoneController@getIndex', array($project->url, $project->milestone->url))->with('message', trans('messages.form_error'));
         }
 
         return View::make('milestone.blueprint.blueprint')->with(array(
-            'project' => $project,
-            'milestone' => $milestone,
-            'blueprint' => $blueprint
+            'project' => $project
         ));
     }
 
@@ -167,26 +174,29 @@ class MilestoneController extends BaseController
             $event->milestone_id = $milestoneId;
             $event->blueprint_id = $newBlueprint->blueprint_id;
             $event->changes = $changes;
-            $event->description = $description;
+            $event->description = nl2br($description);
             $event->save();
         }
     }
 
     public function getCreateBug($projectUrl, $milestoneUrl)
     {
-        $project = Project::getProjectByUrl($projectUrl);
-        $milestone = Milestone::getMilestoneByUrl($milestoneUrl)->first();
+        $project = Project::where('url', $projectUrl)->with(array('milestone' => function($query) use($milestoneUrl)
+        {
+            $query->where('url', $milestoneUrl)->get();
+        }))->first();
 
         return View::make('milestone.bug.create-bug')->with(array(
-            'project' => $project,
-            'milestone' => $milestone
+            'project' => $project
         ));
     }
 
     public function postCreateBug($projectUrl, $milestoneUrl)
     {
-        $project = Project::getProjectByUrl($projectUrl);
-        $milestone = Milestone::getMilestoneByUrl($milestoneUrl);
+        $project = Project::where('url', $projectUrl)->with(array('milestone' => function($query) use($milestoneUrl)
+        {
+            $query->where('url', $milestoneUrl)->get();
+        }))->first();
 
         if (!is_null(Input::get('update')))
         {
@@ -203,7 +213,7 @@ class MilestoneController extends BaseController
 
         if (!$bug)
         {
-            return Redirect::action('MilestoneController@getIndex', array($project->url, $milestone->url))->with('message', trans('messages.form_error'));
+            return Redirect::action('MilestoneController@getIndex', array($project->url, $project->milestone->url))->with('message', trans('messages.form_error'));
         }
 
         $v = Validator::make(Input::all(), Bug::getRules(Input::get('update'), $bug->bug_id));
@@ -213,42 +223,116 @@ class MilestoneController extends BaseController
         }
 
         $bug->title = Input::get('title');
-        $bug->description = Input::get('description');
+        $bug->description = nl2br(Input::get('description'));
         $bug->user_id_assigned = (null !== Input::get('user_id_assigned')) ? Input::get('user_id_assigned')[0] : null;
         $bug->status = Input::get('status');
         $bug->importance = Input::get('importance');
         $bug->project_id = $project->project_id;
         $bug->blueprint_id = (null !== Input::get('blueprint_id')) ? Input::get('blueprint_id')[0] : null;
 
-        $milestone->bugs()->save($bug);
+        $project->milestone->bugs()->save($bug);
         if (!is_null(Input::get('update')))
         {
-            $this->updatedBug($oldBug, $bug, $project->project_id, $milestone->milestone_id, Input::get('description_update'));
+            $this->updatedBug($oldBug, $bug, $project->project_id, $project->milestone->milestone_id, Input::get('description_update'));
         }
 
-        return Redirect::action('MilestoneController@getBug', array($project->url, $milestone->url, $bug->bug_id))->with('message', $message);
+        return Redirect::action('MilestoneController@getBug', array($project->url, $project->milestone->url, $bug->bug_id))->with('message', $message);
+    }
+
+    protected function updatedBug($oldBug, $newBug, $projectId, $milestoneId, $description)
+    {
+        $changes = '';
+        if ($oldBug['status'] !== $newBug->status)
+            $changes .= '<li>'.Auth::user()->name.' change status from '.Helper::getBugStatus($oldBug['status']).' to '.Helper::getBugStatus($newBug->status).'</li>';
+
+        if ($oldBug['importance'] !== $newBug->importance)
+            $changes .= '<li>'.Auth::user()->name.' change importance from '.Helper::getBugImportance($oldBug['importance']).' to '.Helper::getBugImportance($newBug->importance).'</li>';
+
+        if ($oldBug['title'] !== $newBug->title)
+            $changes .= '<li>'.Auth::user()->name.' change title from <i>'.$oldBug['title'].'</i> to <i>'.$newBug->title.'</i></li>';
+
+        if ($oldBug['description'] !== $newBug->description)
+            $changes .= '<li>'.Auth::user()->name.' change description';
+
+        if ($oldBug['user_id_assigned'] !== $newBug->user_id_assigned)
+        {
+            $oldUser = !empty($oldBug['user_id_assigned']) ? User::find($oldBug['user_id_assigned'])->name : 'None';
+            $newUser = !empty($newBug->user_id_assigned) ? User::find($newBug->user_id_assigned)->name : 'None';
+            $changes .= '<li>'.Auth::user()->name.' change assigned from '.$oldUser.' to '.$newUser.'</li>';
+        }
+
+        if ($oldBug['blueprint_id'] !== $newBug->blueprint_id)
+        {
+            $oldBlueprint = !empty($oldBug['blueprint_id']) ? Blueprint::find($oldBug['blueprint_id'])->title : 'None';
+            $newBlueprint = !empty($newBug->blueprint_id) ? Blueprint::find($newBug->blueprint_id)->title : 'None';
+            $changes .= '<li>'.Auth::user()->name.' change parent from '.$oldBlueprint.' to '.$newBlueprint.'</li>';
+        }
+
+        if (!empty($changes) || !empty($description))
+        {
+            $event = new Events;
+            $event->user_id = Auth::id();
+            $event->project_id = $projectId;
+            $event->milestone_id = $milestoneId;
+            $event->bug_id = $newBug->bug_id;
+            $event->changes = $changes;
+            $event->description = nl2br($description);
+            $event->save();
+        }
     }
 
     public function getBug($projectUrl, $milestoneUrl, $bugId)
     {
-        $project = Project::getProjectByUrl($projectUrl);
-        $milestone = Milestone::getMilestoneByUrl($milestoneUrl);
-        $bug = Bug::where('bug_id', $bugId)->with('userAssigned', 'userCreated', 'events', 'parent')->first();
-
-        if (!$bug)
+        $project = Project::where('url', $projectUrl)->with(array('milestone' => function($query) use($milestoneUrl, $bugId)
         {
-            return Redirect::action('MilestoneController@getIndex', array($project->url, $milestone->url))->with('message', trans('messages.form_error'));
+            $query->where('url', $milestoneUrl)->with(array('bug' => function($query) use($bugId)
+            {
+                $query->where('bug_id', $bugId)->with('userAssigned', 'userCreated', 'events', 'parent')->get();
+            }))->get();
+        }))->first();
+
+        if (!isset($project->milestone->bug))
+        {
+            return Redirect::action('MilestoneController@getIndex', array($project->url, $project->milestone->url))->with('message', trans('messages.form_error'));
         }
 
         return View::make('milestone.bug.bug')->with(array(
-            'project' => $project,
-            'milestone' => $milestone,
-            'bug' => $bug
+            'project' => $project
         ));
     }
 
     public function getUpdateBug($projectUrl, $milestoneUrl, $bugId)
     {
+        $project = Project::where('url', $projectUrl)->with(array('milestone' => function($query) use($milestoneUrl, $bugId)
+        {
+            $query->where('url', $milestoneUrl)->with(array('bug' => function($query) use($bugId)
+            {
+                $query->where('bug_id', $bugId)->with('parent')->get();
+            }))->get();
+        }))->first();
+
+        if (!$project->milestone->bug)
+        {
+            return Redirect::action('MilestoneController@getIndex', array($project->url, $project->milestone->url))->with('message', trans('messages.form_error'));
+        }
+
+        return View::make('milestone.bug.update-bug')->with(array(
+            'project' => $project
+        ));
+    }
+
+    public function getDeleteBug($projectUrl, $milestoneUrl, $bugId)
+    {
+        $bug = Bug::find($bugId);
+
+        if ($bug)
+        {
+            $bug->delete();
+            Events::where('bug_id', $bugId)->delete();
+            return Redirect::action('MilestoneController@getIndex', array($projectUrl, $milestoneUrl))->with('message', trans('messages.delete_bug'));
+        }
+
+        return Redirect::action('MilestoneController@getIndex', array($projectUrl, $milestoneUrl))->with('message', trans('messages.form_error'));
 
     }
 
@@ -272,9 +356,11 @@ class MilestoneController extends BaseController
 
     public function postBlueprints($projectUrl, $milestoneUrl)
     {
-        $project = Project::getProjectByUrl($projectUrl);
-        $milestone = Milestone::where('url', $milestoneUrl)->with('blueprints')->first();
+        $project = Project::where('url', $projectUrl)->with(array('milestone' => function($query) use($milestoneUrl)
+        {
+            $query->where('url', $milestoneUrl)->with('blueprints')->get();
+        }))->first();
 
-        return $milestone->blueprints;
+        return $project->milestone->blueprints;
     }
 }

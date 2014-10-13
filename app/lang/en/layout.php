@@ -37,6 +37,8 @@ return array(
     'delete_milestone' => 'Delete Milestone',
     'update_blueprint' => 'Update Blueprint',
     'delete_blueprint' => 'Delete Blueprint',
+    'update_bug' => 'Update Bug',
+    'delete_bug' => 'Delete Bug',
     'desc_update' => 'Description Update',
     'desc' => 'Description',
     'admin' => 'Admin',

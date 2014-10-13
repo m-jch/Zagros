@@ -1,15 +1,15 @@
 @extends('layouts.milestone.main')
 
 @section('title')
-    {{trans('layout.zagros')}}::{{$milestone->codename}}
+    {{trans('layout.zagros')}}::{{$project->milestone->codename}}
 @stop
 
 @section('milestone-navbar')active @stop
 
 @section('content')
     <div class="col-md-12">
-        <h3>Blueprint: {{$blueprint->title}} #{{$blueprint->blueprint_id}}</h3>
-        <p>{{$blueprint->description}}</p>
+        <h3>Blueprint: {{$project->milestone->blueprint->title}} #{{$project->milestone->blueprint->blueprint_id}}</h3>
+        <p>{{$project->milestone->blueprint->description}}</p>
         @if (Session::has('message'))
             <p class="text-info">{{Session::get('message')}}</p>
         @endif
@@ -19,15 +19,15 @@
                     <tbody>
                         <tr>
                             <td><b>Registred by:<b></td>
-                            <td>{{$blueprint->user_created->name}}</td>
+                            <td>{{$project->milestone->blueprint->user_created->name}}</td>
                         </tr>
                         <tr>
                             <td><b>Assign to:</b></td>
-                            <td>{{isset($blueprint->user_assigned->name) ? $blueprint->user_assigned->name : 'Not Assigned'}}</td>
+                            <td>{{isset($project->milestone->blueprint->user_assigned->name) ? $project->milestone->blueprint->user_assigned->name : 'Not Assigned'}}</td>
                         </tr>
                         <tr>
                             <td><b>Created at:</b></td>
-                            <td>{{(new Carbon\Carbon($blueprint->created_at))->diffForHumans(Carbon\Carbon::now())}}</td>
+                            <td>{{(new Carbon\Carbon($project->milestone->blueprint->created_at))->diffForHumans(Carbon\Carbon::now())}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -37,30 +37,30 @@
                     <tbody>
                         <tr>
                             <td><b>Importance:<b></td>
-                            <td style="color: {{Helper::getBlueprintImportanceColor($blueprint->importance)}}">
-                                {{Helper::getBlueprintImportance($blueprint->importance)}}
+                            <td style="color: {{Helper::getBlueprintImportanceColor($project->milestone->blueprint->importance)}}">
+                                {{Helper::getBlueprintImportance($project->milestone->blueprint->importance)}}
                             </td>
                         </tr>
                         <tr>
                             <td><b>Status:</b></td>
-                            <td style="color: {{Helper::getBlueprintStatusColor($blueprint->status)}}">
-                                {{Helper::getBlueprintStatus($blueprint->status)}}
+                            <td style="color: {{Helper::getBlueprintStatusColor($project->milestone->blueprint->status)}}">
+                                {{Helper::getBlueprintStatus($project->milestone->blueprint->status)}}
                             </td>
                         </tr>
                         <tr>
                             <td><b>Updated at:</b></td>
-                            <td>{{(new Carbon\Carbon($blueprint->updated_at))->diffForHumans(Carbon\Carbon::now())}}</td>
+                            <td>{{(new Carbon\Carbon($project->milestone->blueprint->updated_at))->diffForHumans(Carbon\Carbon::now())}}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div class="col-md-12">
                 @if (Auth::user()->is_admin)
-                    <a class="pull-right btn btn-default" href="{{URL::action('MilestoneController@getUpdateBlueprint', array($project->url, $milestone->url, $blueprint->blueprint_id))}}">Update</a>
+                    <a class="pull-right btn btn-default" href="{{URL::action('MilestoneController@getUpdateBlueprint', array($project->url, $project->milestone->url, $project->milestone->blueprint->blueprint_id))}}">Update</a>
                 @endif
             </div>
             <div class="col-md-12">
-                @foreach ($blueprint->events as $event)
+                @foreach ($project->milestone->blueprint->events as $event)
                     <div class="event">
                         <h5>{{User::find($event->user_id)->name}} in {{(new Carbon\Carbon($event->created_at))->diffForHumans(Carbon\Carbon::now())}}</h5>
                         @if (!empty($event->changes))
@@ -80,9 +80,9 @@
         <div class="col-md-6">
             <h4>Related bugs</h4>
             <ul>
-                @foreach ($blueprint->bugs as $bug)
+                @foreach ($project->milestone->blueprint->bugs as $bug)
                     <li>
-                        <a href="{{URL::action('MilestoneController@getBug', array($project->url, $milestone->url, $bug->bug_id))}}">{{$bug->title}}</a>
+                        <a href="{{URL::action('MilestoneController@getBug', array($project->url, $project->milestone->url, $bug->bug_id))}}">{{$bug->title}}</a>
                         [
                             <span style="color: {{Helper::getBugImportanceColor($bug->importance)}}">{{Helper::getBugImportance($bug->importance)}}</span>
                             <span style="color: {{Helper::getBugStatusColor($bug->status)}}">, {{Helper::getBugStatus($bug->status)}}</span>

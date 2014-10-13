@@ -71,10 +71,26 @@ class Milestone extends Eloquent
     }
 
     /**
+     * Access to blueprint of a milestone
+     */
+    public function blueprint()
+    {
+        return $this->hasOne('Blueprint', 'milestone_id', 'milestone_id');
+    }
+
+    /**
      * Access to bugs of a milestone
      */
     public function bugs()
     {
         return $this->hasMany('Bug', 'milestone_id', 'milestone_id');
+    }
+
+    /**
+     * Access to bug of a milestone
+     */
+    public function bug()
+    {
+        return $this->hasOne('Bug', 'milestone_id', 'milestone_id');
     }
 }

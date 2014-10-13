@@ -1,7 +1,7 @@
 @extends('layouts.milestone.main')
 
 @section('title')
-    {{trans('layout.zagros')}}::{{$milestone->codename}}
+    {{trans('layout.zagros')}}::{{$project->milestone->codename}}
 @stop
 
 @section('blueprint-navbar')active @stop
@@ -12,7 +12,7 @@
         @if (Session::has('message'))
             <p class="text-info text-center">{{Session::get('message')}}</p>
         @endif
-        {{Form::open(array('action' => array('MilestoneController@postCreateBlueprint', $project->url, $milestone->url), 'class' => 'form-horizontal', 'role' => 'form'))}}
+        {{Form::open(array('action' => array('MilestoneController@postCreateBlueprint', $project->url, $project->milestone->url), 'class' => 'form-horizontal', 'role' => 'form'))}}
             <div class="form-group">
                 {{Form::label('title', trans('layout.title'), array('class' => 'col-sm-2 control-label'))}}
                 <div class="col-sm-10">
@@ -62,7 +62,7 @@
     <script>
         $(function() {
             var admins = $('#assign').magicSuggest({
-                data: '{{URL::action('MilestoneController@postUsers', array($project->url, $milestone->url))}}',
+                data: '{{URL::action('MilestoneController@postUsers', array($project->url, $project->milestone->url))}}',
                 valueField: 'user_id',
                 displayField: 'name',
                 mode: 'remote',

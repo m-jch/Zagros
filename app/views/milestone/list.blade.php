@@ -1,14 +1,14 @@
 @extends('layouts.milestone.main')
 
 @section('title')
-    {{trans('layout.zagros')}}::{{$milestone->codename}}
+    {{trans('layout.zagros')}}::{{$project->milestone->codename}}
 @stop
 
 @section('milestone-navbar')active @stop
 
 @section('content')
     <div class="col-md-6 col-md-offset-3">
-        <h2 class="text-center">{{$milestone->codename}}</h2>
+        <h2 class="text-center">{{$project->milestone->codename}}</h2>
         @if (Session::has('message'))
             <p class="text-info text-center">{{Session::get('message')}}</p>
         @endif
@@ -27,9 +27,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($milestone->blueprints as $blueprint)
+                    @foreach ($project->milestone->blueprints as $blueprint)
                         <tr>
-                            <td><a href="{{URL::action('MilestoneController@getBlueprint', array($project->url, $milestone->url, $blueprint->blueprint_id))}}">{{$blueprint->title}}</a></td>
+                            <td><a href="{{URL::action('MilestoneController@getBlueprint', array($project->url, $project->milestone->url, $blueprint->blueprint_id))}}">{{$blueprint->title}}</a></td>
                             <td>
                                 @if (isset($blueprint->user_assigned->name))
                                     {{$blueprint->user_assigned->name}}
@@ -65,9 +65,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($milestone->bugs as $bug)
+                    @foreach ($project->milestone->bugs as $bug)
                         <tr>
-                            <td><a href="{{URL::action('MilestoneController@getBug', array($project->url, $milestone->url, $bug->bug_id))}}">{{$bug->title}}</a></td>
+                            <td><a href="{{URL::action('MilestoneController@getBug', array($project->url, $project->milestone->url, $bug->bug_id))}}">{{{$bug->title}}}</a></td>
                             <td>
                                 @if (isset($bug->user_assigned->name))
                                     {{$bug->user_assigned->name}}

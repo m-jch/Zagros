@@ -57,6 +57,7 @@ class Project extends Eloquent
      */
     public static function getProjectByUrl($url)
     {
+        //return $this->where('url', $url);
         return $project = Project::where('url', $url)->first();
     }
 
@@ -85,5 +86,10 @@ class Project extends Eloquent
     public function milestones()
     {
         return $this->hasMany('Milestone', 'project_id', 'project_id');
+    }
+
+    public function milestone()
+    {
+        return $this->hasOne('Milestone', 'project_id', 'project_id');
     }
 }

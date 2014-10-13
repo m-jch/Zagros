@@ -56,14 +56,14 @@ Route::filter('valid-project-user', function($route)
 
 Route::filter('valid-milestone', function($route)
 {
-	$project = Project::where('url', Route::input('project'))->first();
-	$milestone = Milestone::where('project_id', $project->project_id)
-							->where('url', Route::input('milestone'))
-							->first();
-
-	if (!$milestone)
+	$project = Project::where('url', Route::input('project'))->with(array('milestone' => function($query)
 	{
-		return Redirect::to('/')->with('message', trans('messages.form_error'));
+		$query->where('url', Route::input('milestone'));
+	}))->first();
+
+	if (!isset($project->milestone->milestone_id))
+	{
+		return Redirect::action('ProjectController@getIndex', $project->url)->with('message', trans('messages.form_error'));
 	}
 });
 
