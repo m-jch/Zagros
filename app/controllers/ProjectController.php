@@ -55,7 +55,7 @@ class ProjectController extends BaseController
         }
 
         $milestone->codename = Input::get('codename');
-        $milestone->url = Helper::slugify(Input::get('codename'));
+        $milestone->url = Str::slug(Input::get('codename'));
         $milestone->version = Input::get('version');
         $milestone->release_date = Input::get('release_date');
         $milestone->description = Input::get('description');
