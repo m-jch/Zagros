@@ -46,6 +46,12 @@ class AdminController extends BaseController
         $writers = Project::removeElementFromArray($admins, $writers);
         $readers = Project::removeElementFromArray(array_merge($admins, $writers), $readers);
 
+        if (count($admins) == 0)
+        {
+            $errors = array('admins' => 'At least one admin must be determined.');
+            $errors = new Illuminate\Support\MessageBag($errors);
+            return Redirect::back()->withInput()->with('errors', $errors);
+        }
 
         $project->name = Input::get('name');
         $project->url = Str::slug(Input::get('name'));
