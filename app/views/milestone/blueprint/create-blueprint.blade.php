@@ -1,7 +1,7 @@
 @extends('layouts.milestone.main')
 
 @section('title')
-    {{trans('layout.zagros')}}::{{$project->milestone->codename}}
+    {{$project->name}} - {{$project->milestone->codename}} - {{trans('layout.cnb')}}
 @stop
 
 @section('blueprint-navbar')active @stop

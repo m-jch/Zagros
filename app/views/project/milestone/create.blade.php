@@ -1,14 +1,14 @@
 @extends('layouts.project.main')
 
 @section('title')
-    {{trans('layout.zagros')}}::{{trans('layout.milestones')}}
+    {{$project->name}} - {{trans('layout.cnm')}}
 @stop
 
 @section('admin-navbar')active @stop
 
 @section('content')
     <div class="col-md-6 col-md-offset-3">
-        <h2 class="text-center">{{trans('layout.milestones')}}</h2>
+        <h2 class="text-center">{{trans('layout.cnm')}}</h2>
         @if (Session::has('message'))
             <p class="text-info text-center">{{Session::get('message')}}</p>
         @endif

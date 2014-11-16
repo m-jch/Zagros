@@ -1,7 +1,7 @@
 @extends('layouts.guest.main')
 
 @section('title')
-    {{trans('layout.zagros')}}::{{trans('layout.bts')}}
+    {{trans('layout.zagros')}}::{{trans('layout.register')}}
 @stop
 
 @section('register-navbar')active @stop

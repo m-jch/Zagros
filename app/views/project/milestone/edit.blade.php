@@ -1,7 +1,7 @@
 @extends('layouts.project.main')
 
 @section('title')
-    {{trans('layout.zagros')}}::{{trans('layout.milestones')}}
+    {{$project->name}} - {{trans('layout.update_milestone')}}
 @stop
 
 @section('admin-navbar')active @stop

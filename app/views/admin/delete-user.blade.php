@@ -1,7 +1,7 @@
 @extends('layouts.user.main')
 
 @section('title')
-    {{trans('layout.zagros')}}::{{trans('layout.admin')}}
+    {{trans('layout.admin')}} - {{trans('layout.delete_user')}}
 @stop
 
 @section('admin-navbar')active @stop

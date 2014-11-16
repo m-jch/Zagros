@@ -1,7 +1,7 @@
 @extends('layouts.user.main')
 
 @section('title')
-    {{trans('layout.zagros')}}::{{trans('layout.projects')}}
+    {{trans('layout.prjs_list')}}
 @stop
 
 @section('projects-navbar')active @stop

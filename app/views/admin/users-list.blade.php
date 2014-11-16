@@ -1,14 +1,14 @@
 @extends('layouts.user.main')
 
 @section('title')
-    {{trans('layout.zagros')}}::{{trans('layout.projects')}}
+    {{trans('layout.admin')}} - {{trans('layout.users')}}
 @stop
 
 @section('admin-navbar')active @stop
 
 @section('content')
     <div class="col-md-6 col-md-offset-3">
-        <h2 class="text-center">Users</h2>
+        <h2 class="text-center">{{trans('layout.users')}}</h2>
         @if (Session::has('message'))
             <p class="text-info text-center">{{Session::get('message')}}</p>
         @endif
