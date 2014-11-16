@@ -24,7 +24,7 @@ class Helper
             'Critical' => '#FF3A3A',
             'High'     => '#990D0D',
             'Medium'   => '#007C1E',
-            'Low'      => '#000'
+            'Low'      => '#000000'
         );
 
         return $colors[self::getBugImportance($index)];
@@ -55,7 +55,7 @@ class Helper
             'Confirmed'   => '#002847',
             'In Progress' => '#00467E',
             'Completed'   => '#007E00',
-            'On Hold'     => '#000',
+            'On Hold'     => '#000000',
             'Rejected'    => '#8A8A8A'
         );
 
@@ -83,7 +83,7 @@ class Helper
             'Critical' => '#FF3A3A',
             'High'     => '#990D0D',
             'Medium'   => '#007C1E',
-            'Low'      => '#000'
+            'Low'      => '#000000'
         );
 
         return $colors[self::getBlueprintImportance($index)];
@@ -115,11 +115,11 @@ class Helper
         $colors = array(
             'Not Started'    => '#414141',
             'Started'        => '#002847',
-            'In Progress'   => '#00467E',
+            'In Progress'    => '#00467E',
             'Good Progress'  => '#0B79D1',
             'Beta Available' => '#888302',
             'Implemented'    => '#007E00',
-            'On Hold'        => '#000',
+            'On Hold'        => '#000000',
             'Rejected'       => '#8A8A8A',
             'Unknown'        => '#8A8A8A'
         );
@@ -127,17 +127,8 @@ class Helper
         return $colors[self::getBlueprintStatus($index)];
     }
 
-    public static function slugify($text)
+    public static function getAvatar($email)
     {
-      $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
-      $text = trim($text, '-');
-      $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-      $text = strtolower($text);
-      $text = preg_replace('~[^-\w]+~', '', $text);
-      if (empty($text))
-      {
-        return false;
-      }
-      return $text;
+        return HTML::image('http://gravatar.com/avatar/'.md5(strtolower(trim($email))).'?s=60', 'avatar', array('class' => 'avatar'));
     }
 }

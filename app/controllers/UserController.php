@@ -51,8 +51,8 @@ class UserController extends BaseController
         $user->email = Input::get('email');
         $user->name = Input::get('name');
         $user->password = Hash::make(Input::get('password'));
-        Event::fire('user.register', $user);
         $user->save();
+        Event::fire('user.register', $user);
 
         return Redirect::action('UserController@getLogin')->with('message', trans('messages.register_success'));
     }

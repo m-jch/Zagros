@@ -19,15 +19,13 @@
                                         <li><a href="{{URL::action('AdminController@getCreateUser')}}">{{trans('layout.cnu')}}</a></li>
                                         <li><a href="{{URL::action('AdminController@getCreateProject')}}">{{trans('layout.cnp')}}</a></li>
                                         <li class="divider"></li>
-                                        <li><a href="#">{{trans('layout.settings')}}</a></li>
+                                        <li><a href="{{URL::action('AdminController@getUsersList')}}">{{trans('layout.users')}}</a></li>
                                     </ul>
                                 </li>
                             @endif
                             <li class="@yield('user-navbar')">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{trans('layout.user')}} <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">{{trans('layout.settings')}}</a></li>
-                                    <li class="divider"></li>
                                     <li><a href="{{URL::action('UserController@getLogout')}}">{{trans('layout.logout')}}</a></li>
                                 </ul>
                             </li>

@@ -45,6 +45,17 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	);
 
 	/**
+	* Rules for update user
+	* @var array
+	*/
+	public static $updateRules = array(
+		'email' => 'required|email|unique:users,email',
+		'name' => 'required|max:20|unique:users,name',
+		'password' => 'min:6|max:16',
+		'cpassword' => 'same:password|required_with:password'
+	);
+
+	/**
 	 * Rules for user login
 	 * @var array
 	 */
@@ -52,6 +63,23 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		'email' => 'required|exists:users',
 		'password' => 'required'
 	);
+
+	/**
+	* Get rules for new or update
+	* @param $update string|null
+	* @param $id string|null
+	* @return array
+	*/
+	public static function getRules($update, $id)
+	{
+		if (is_null($update))
+		{
+			return static::$registerRules;
+		}
+		static::$updateRules['name'] .= ','.$id.',user_id';
+		static::$updateRules['email'] .= ','.$id.',user_id';
+		return static::$updateRules;
+	}
 
 	/**
 	 * This attribute specified user is admin or not for logined user

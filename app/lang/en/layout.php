@@ -31,7 +31,9 @@ return array(
     'edit' => 'Edit',
     'delete' => 'Delete',
     'update' => 'Update',
+    'update_user' => 'Update User',
     'update_project' => 'Update Project',
+    'delete_user' => 'Delete User',
     'delete_project' => 'Delete Project',
     'update_milestone' => 'Update Milestone',
     'delete_milestone' => 'Delete Milestone',
@@ -57,5 +59,7 @@ return array(
     'status' => 'Status',
     'importance' => 'Importance',
     'assign' => 'Assign',
-    'parent' => 'Parent'
+    'parent' => 'Parent',
+    'users' => 'Users',
+    'cancel' => 'Cancel'
 );

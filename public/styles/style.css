@@ -32,3 +32,6 @@ body {
     background: #F5F5F5;
     padding: 10px;
 }
+.btn-pulled {
+    margin: 0px 3px;
+}
