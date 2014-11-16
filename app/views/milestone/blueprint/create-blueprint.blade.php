@@ -4,7 +4,9 @@
     {{$project->name}} - {{$project->milestone->codename}} - {{trans('layout.cnb')}}
 @stop
 
-@section('blueprint-navbar')active @stop
+@section('menu-mid')
+    <li class="active"><a>{{trans('layout.cnb')}}</a></li>
+@stop
 
 @section('content')
     <div class="col-md-6 col-md-offset-3">

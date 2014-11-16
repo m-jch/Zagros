@@ -4,7 +4,9 @@
     {{$project->name}} - {{$project->milestone->codename}} - {{trans('layout.update_blueprint')}}
 @stop
 
-@section('milestone-navbar')active @stop
+@section('menu-mid')
+    <li class="active"><a>{{trans('layout.update_blueprint')}}</a></li>
+@stop
 
 @section('content')
     <div class="col-md-6 col-md-offset-3">

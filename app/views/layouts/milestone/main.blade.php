@@ -12,6 +12,7 @@
                             <li class="@yield('projects-navbar')"><a href="{{URL::to('/')}}">{{trans('layout.projects')}}</a></li>
                             <li class="@yield('milestones-navbar')"><a href="{{URL::action('ProjectController@getIndex', $project->url)}}">{{trans('layout.milestones')}}</a></li>
                             <li class="@yield('milestone-navbar')"><a href="{{URL::action('MilestoneController@getIndex', array($project->url, $project->milestone->url))}}">{{$project->milestone->codename}}</a></li>
+                            @yield('menu-mid')
                             @if (Auth::user()->is_admin)
                                 <li class="@yield('blueprint-navbar')"><a href="{{URL::action('MilestoneController@getCreateBlueprint', array($project->url, $project->milestone->url))}}">{{trans('layout.new_blueprint')}}</a></li>
                             @endif

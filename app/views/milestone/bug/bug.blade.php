@@ -4,7 +4,9 @@
     {{$project->name}} - {{$project->milestone->codename}} - {{$project->milestone->bug->title}}
 @stop
 
-@section('milestone-navbar')active @stop
+@section('menu-mid')
+    <li class="active"><a>{{trans('layout.bug')}}</a></li>
+@stop
 
 @section('content')
     <div class="col-md-12">

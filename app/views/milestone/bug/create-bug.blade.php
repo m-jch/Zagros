@@ -4,7 +4,9 @@
     {{$project->name}} - {{$project->milestone->codename}} - {{trans('layout.cnbug')}}
 @stop
 
-@section('bug-navbar')active @stop
+@section('menu-mid')
+    <li class="active"><a>{{trans('layout.cnbug')}}</a></li>
+@stop
 
 @section('content')
     <div class="col-md-6 col-md-offset-3">
