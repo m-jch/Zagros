@@ -41,20 +41,6 @@
                 </div>
             </div>
         </div>
-        <div class="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3><a href="">{{trans('layout.zagros')}}</a><samll class="small"> {{ZA_VERSION}}</small></h3>
-                        <ul class="list-inline">
-                            <li><a href="">{{trans('layout.issue')}}</a></li>
-                            <li><a href="">{{trans('layout.pull')}}</a></li>
-                            <li><a href="">{{trans('layout.contact')}}</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
         @include('layouts.guest.footer-includes')
     </body>
 </html>

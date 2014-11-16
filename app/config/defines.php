@@ -1,3 +1,3 @@
 <?php
 
-define('ZA_VERSION', '0.0.1-dev');
+define('ZA_VERSION', '1.0.0-Beta');
