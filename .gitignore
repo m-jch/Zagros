@@ -1,5 +1,7 @@
 /bootstrap/compiled.php
 /vendor
+/public/packages/mohsen
+/app/config/local
 composer.phar
 composer.lock
 .env.*.php

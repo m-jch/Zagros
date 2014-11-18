@@ -6,20 +6,13 @@
 	"type": "project",
 	"require": {
 		"laravel/framework": "4.2.*",
+		"mohsen/zagros-core": "1.0.*",
 		"nesbot/Carbon": "*"
 	},
 	"autoload": {
 		"classmap": [
 			"app/commands",
-			"app/controllers",
-			"app/models",
-			"app/database/migrations",
-			"app/database/seeds",
-			"app/tests/TestCase.php",
-			"app/classes"
-		],
-		"files": [
-			"app/config/defines.php"
+			"app/tests/TestCase.php"
 		]
 	},
 	"scripts": {
