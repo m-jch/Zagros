@@ -6,10 +6,10 @@ class Helper
     public static function getBugImportance($index = null)
     {
         $bugImportance = array(
-            0 => 'Critical',
-            1 => 'High',
-            2 => 'Medium',
-            3 => 'Low',
+            0 => trans('layout.critical'),
+            1 => trans('layout.high'),
+            2 => trans('layout.medium'),
+            3 => trans('layout.low'),
         );
 
         if (is_null($index))
@@ -21,24 +21,24 @@ class Helper
     public static function getBugImportanceColor($index)
     {
         $colors = array(
-            'Critical' => '#FF3A3A',
-            'High'     => '#990D0D',
-            'Medium'   => '#007C1E',
-            'Low'      => '#000000'
+            0 => '#FF3A3A',
+            1 => '#990D0D',
+            2 => '#007C1E',
+            3 => '#000000'
         );
 
-        return $colors[self::getBugImportance($index)];
+        return $colors[$index];
     }
 
     public static function getBugStatus($index = null)
     {
         $bugsStatus = array(
-            0 => 'New',
-            1 => 'Confirmed',
-            2 => 'In Progress',
-            3 => 'Completed',
-            4 => 'On Hold',
-            5 => 'Rejected'
+            0 => trans('layout.new'),
+            1 => trans('layout.confirmed'),
+            2 => trans('layout.in_progress'),
+            3 => trans('layout.completed'),
+            4 => trans('layout.on_hold'),
+            5 => trans('layout.rejected'),
         );
 
         if (is_null($index))
@@ -51,24 +51,24 @@ class Helper
     public static function getBugStatusColor($index)
     {
         $colors = array(
-            'New'         => '#414141',
-            'Confirmed'   => '#002847',
-            'In Progress' => '#00467E',
-            'Completed'   => '#007E00',
-            'On Hold'     => '#000000',
-            'Rejected'    => '#8A8A8A'
+            0 => '#414141',
+            1 => '#002847',
+            2 => '#00467E',
+            3 => '#007E00',
+            4 => '#000000',
+            5 => '#8A8A8A'
         );
 
-        return $colors[self::getBugStatus($index)];
+        return $colors[$index];
     }
 
     public static function getBlueprintImportance($index = null)
     {
         $blueprintImportance = array(
-            0 => 'Critical',
-            1 => 'High',
-            2 => 'Medium',
-            3 => 'Low',
+            0 => trans('layout.critical'),
+            1 => trans('layout.high'),
+            2 => trans('layout.medium'),
+            3 => trans('layout.low'),
         );
 
         if (is_null($index))
@@ -80,27 +80,27 @@ class Helper
     public static function getBlueprintImportanceColor($index)
     {
         $colors = array(
-            'Critical' => '#FF3A3A',
-            'High'     => '#990D0D',
-            'Medium'   => '#007C1E',
-            'Low'      => '#000000'
+            0 => '#FF3A3A',
+            1 => '#990D0D',
+            2 => '#007C1E',
+            3 => '#000000'
         );
 
-        return $colors[self::getBlueprintImportance($index)];
+        return $colors[$index];
     }
 
     public static function getBlueprintStatus($index = null)
     {
         $blueprintsStatus = array(
-            0 => 'Unknown',
-            1 => 'Not Started',
-            2 => 'Started',
-            3 => 'In Progress',
-            4 => 'Good Progress',
-            5 => 'Beta Available',
-            6 => 'Implemented',
-            7 => 'On Hold',
-            8 => 'Rejected',
+            0 => trans('layout.unknown'),
+            1 => trans('layout.not_started'),
+            2 => trans('layout.started'),
+            3 => trans('layout.in_progress'),
+            4 => trans('layout.good_progress'),
+            5 => trans('layout.beta_available'),
+            6 => trans('layout.implemented'),
+            7 => trans('layout.on_hold'),
+            8 => trans('layout.rejected'),
         );
 
         if (is_null($index))
@@ -113,18 +113,18 @@ class Helper
     public static function getBlueprintStatusColor($index)
     {
         $colors = array(
-            'Not Started'    => '#414141',
-            'Started'        => '#002847',
-            'In Progress'    => '#00467E',
-            'Good Progress'  => '#0B79D1',
-            'Beta Available' => '#888302',
-            'Implemented'    => '#007E00',
-            'On Hold'        => '#000000',
-            'Rejected'       => '#8A8A8A',
-            'Unknown'        => '#8A8A8A'
+            0 => '#8A8A8A',
+            1 => '#414141',
+            2 => '#002847',
+            3 => '#00467E',
+            4 => '#0B79D1',
+            5 => '#888302',
+            6 => '#007E00',
+            7 => '#000000',
+            8 => '#8A8A8A',
         );
 
-        return $colors[self::getBlueprintStatus($index)];
+        return $colors[$index];
     }
 
     public static function getAvatar($email)
