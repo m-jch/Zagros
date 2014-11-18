@@ -32,9 +32,9 @@
                     @endif
                 </h4>
                 <p><small><b>Email: </b>{{$user['email']}}</small></p>
-                <p><small><b>Admin projects:</b> {{@implode(', ', $user['admin_projects'])}}</small></p>
-                <p><small><b>Writer projects:</b> {{@implode(', ', $user['writer_projects'])}}</small></p>
-                <p><small><b>Reader projects:</b> {{@implode(', ', $user['reader_projects'])}}</small></p>
+                <p><small><b>Admin projects:</b> {{ ( ! empty( $user['admin_projects'] ) ) ? implode(', ', $user['admin_projects']) : '-' }}</small></p>
+                <p><small><b>Writer projects:</b> {{ ( ! empty( $user['admin_projects'] ) ) ? implode(', ', $user['writer_projects']) : '-' }}</small></p>
+                <p><small><b>Reader projects:</b> {{ ( ! empty( $user['admin_projects'] ) ) ? implode(', ', $user['reader_projects']) : '-' }}</small></p>
                 <hr>
             </div>
         @empty
