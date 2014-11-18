@@ -8,7 +8,7 @@
 
 @section('content')
     <div class="col-md-6 col-md-offset-3">
-        <h2 class="text-center">Projects</h2>
+        <h2 class="text-center">{{trans('layout.projects')}}</h2>
         @if (Session::has('message'))
             <p class="text-info text-center">{{Session::get('message')}}</p>
         @endif
@@ -17,7 +17,7 @@
                 <h3>
                     <a href="{{URL::action('ProjectController@getIndex', $project->url)}}">{{$project->name}}</a>
                     @if (Auth::user()->admin)
-                        <small class="pull-right"> <a href="{{URL::action('AdminController@getUpdateProject', $project->project_id)}}">Edit</a></small>
+                        <small class="pull-right"> <a href="{{URL::action('AdminController@getUpdateProject', $project->project_id)}}">{{trans('layout.edit')}}</a></small>
                     @endif
                 </h3>
                 <small>{{$project->description}}</small>
