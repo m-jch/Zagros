@@ -16,6 +16,9 @@ English    => ```en```
 
 Indonesian => ```id``` thanks to [mul14](https://github.com/mul14)
 
+### Languages neet to update
+1. Indonesian
+
 ### Add language
 If you wnat translate this project to your language, you can translate ```app/lang``` to your language and create a pull request or email: ```mohsen.sh12@hotmail.com```
 
