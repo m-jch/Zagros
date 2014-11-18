@@ -12,6 +12,8 @@
 For change language, you must edit ```locale``` index in ```app/config/app.php``` array.
 
 ### Current languages
+English    => ```en```
+
 Indonesian => ```id``` thanks to [mul14](https://github.com/mul14)
 
 ### Add language
