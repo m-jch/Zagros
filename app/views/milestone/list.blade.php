@@ -15,15 +15,15 @@
     </div>
 
     <div class="col-md-12">
-        <h3 class="text-center">Blueprints</h3>
+        <h3 class="text-center">{{trans('layout.blueprints')}}</h3>
         <div class="table-responsive">
             <table class="table table-hover table-condensed">
                 <thead>
                     <tr>
-                        <th>Blueprint title</th>
-                        <th>Assignee</th>
-                        <th>Importance</th>
-                        <th>Status</th>
+                        <th>{{trans('layout.blueprint_title')}}</th>
+                        <th>{{trans('layout.assignee')}}</th>
+                        <th>{{trans('layout.importance')}}</th>
+                        <th>{{trans('layout.status')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,15 +53,15 @@
     </div>
 
     <div class="col-md-12">
-        <h3 class="text-center">Bugs</h3>
+        <h3 class="text-center">{{trans('layout.bugs')}}</h3>
         <div class="table-responsive">
             <table class="table table-hover table-condensed">
                 <thead>
                     <tr>
-                        <th>Bug title</th>
-                        <th>Assignee</th>
-                        <th>Importance</th>
-                        <th>Status</th>
+                        <th>{{trans('layout.bug_title')}}</th>
+                        <th>{{trans('layout.assignee')}}</th>
+                        <th>{{trans('layout.importance')}}</th>
+                        <th>{{trans('layout.status')}}</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -20,15 +20,15 @@
                 <table class="table table-clear">
                     <tbody>
                         <tr>
-                            <td><b>Registred by:<b></td>
+                            <td><b>{{trans('layout.registred_by')}}<b></td>
                             <td>{{$project->milestone->bug->user_created->name}}</td>
                         </tr>
                         <tr>
-                            <td><b>Assign to:</b></td>
+                            <td><b>{{trans('layout.assign_to')}}</b></td>
                             <td>{{isset($project->milestone->bug->user_assigned->name) ? $project->milestone->bug->user_assigned->name : 'Not Assigned'}}</td>
                         </tr>
                         <tr>
-                            <td><b>Created at:</b></td>
+                            <td><b>{{trans('layout.created_at')}}</b></td>
                             <td>{{(new Carbon\Carbon($project->milestone->bug->created_at))->diffForHumans(Carbon\Carbon::now())}}</td>
                         </tr>
                     </tbody>
@@ -38,19 +38,19 @@
                 <table class="table table-clear">
                     <tbody>
                         <tr>
-                            <td><b>Importance:<b></td>
+                            <td><b>{{trans('layout.importance')}}<b></td>
                             <td style="color: {{Helper::getBugImportanceColor($project->milestone->bug->importance)}}">
                                 {{Helper::getBugImportance($project->milestone->bug->importance)}}
                             </td>
                         </tr>
                         <tr>
-                            <td><b>Status:</b></td>
+                            <td><b>{{trans('layout.status')}}</b></td>
                             <td style="color: {{Helper::getBugStatusColor($project->milestone->bug->status)}}">
                                 {{Helper::getBugStatus($project->milestone->bug->status)}}
                             </td>
                         </tr>
                         <tr>
-                            <td><b>Updated at:</b></td>
+                            <td><b>{{trans('layout.updated_at')}}</b></td>
                             <td>{{(new Carbon\Carbon($project->milestone->bug->updated_at))->diffForHumans(Carbon\Carbon::now())}}</td>
                         </tr>
                     </tbody>
@@ -66,13 +66,13 @@
                     <div class="event">
                         <h5>{{User::find($event->user_id)->name}} in {{(new Carbon\Carbon($event->created_at))->diffForHumans(Carbon\Carbon::now())}}</h5>
                         @if (!empty($event->changes))
-                            <p><b>Changes:</b></p>
+                            <p><b>{{trans('layout.changes')}}</b></p>
                             <ul class="changes">
                                 {{$event->changes}}
                             </ul>
                         @endif
                         @if (!empty($event->description))
-                            <p><b>Description:</b></p>
+                            <p><b>{{trans('layout.desc')}}</b></p>
                             <p class="description">{{$event->description}}</p>
                         @endif
                     </div>
@@ -80,7 +80,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <h4>Blueprint Parent</h4>
+            <h4>{{trans('layout.blueprint_parent')}}</h4>
             <ul>
                 @if (isset($project->milestone->bug->parent))
                     <li>
@@ -91,7 +91,7 @@
                         ]
                     </li>
                 @else
-                    <li>No parent</li>
+                    <li>{{trans('layout.no_parent')}}</li>
                 @endif
             </ul>
         </div>

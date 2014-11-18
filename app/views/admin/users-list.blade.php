@@ -31,10 +31,10 @@
                         <a href="{{action('AdminController@getDeleteUser', $user['user_id'])}}" class="btn btn-danger btn-pulled pull-right">{{trans('layout.delete')}}</a>
                     @endif
                 </h4>
-                <p><small><b>Email: </b>{{$user['email']}}</small></p>
-                <p><small><b>Admin projects:</b> {{ ( ! empty( $user['admin_projects'] ) ) ? implode(', ', $user['admin_projects']) : '-' }}</small></p>
-                <p><small><b>Writer projects:</b> {{ ( ! empty( $user['admin_projects'] ) ) ? implode(', ', $user['writer_projects']) : '-' }}</small></p>
-                <p><small><b>Reader projects:</b> {{ ( ! empty( $user['admin_projects'] ) ) ? implode(', ', $user['reader_projects']) : '-' }}</small></p>
+                <p><small><b>{{trans('layout.email')}} </b>{{$user['email']}}</small></p>
+                <p><small><b>{{trans('layout.admin_projects')}}</b> {{ ( ! empty( $user['admin_projects'] ) ) ? implode(', ', $user['admin_projects']) : '-' }}</small></p>
+                <p><small><b>{{trans('layout.writer_projects')}}</b> {{ ( ! empty( $user['writer_projects'] ) ) ? implode(', ', $user['writer_projects']) : '-' }}</small></p>
+                <p><small><b>{{trans('layout.reader_projects')}}</b> {{ ( ! empty( $user['reader_projects'] ) ) ? implode(', ', $user['reader_projects']) : '-' }}</small></p>
                 <hr>
             </div>
         @empty
