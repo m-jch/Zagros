@@ -3,7 +3,8 @@
 ## Install
 1. Run ```composer create-project --prefer-dist mohsen/zagros```
 2. Edit database config in ```app/config/database.php```
-3. Run ```php artisan migrate```
+3. Run ```php artisan migrate --path=vendor/mohsen/zagros-core/src/migrations/```
+4. Run ```php artisan asset:publish```
 4. Run Zagros from browser.
 5. Register in Zagros as admin user
 6. Go to ```za_users``` table of Zagros database and update field ```admin``` to ```1``` for one time.
