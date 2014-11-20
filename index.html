@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Zagros : Zagros is a bug tracking system">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Zagros</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/mohsen-shafiee/Zagros">View on GitHub</a>
+
+          <h1 id="project_title">Zagros</h1>
+          <h2 id="project_tagline">Zagros is a bug tracking system</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/mohsen-shafiee/Zagros/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/mohsen-shafiee/Zagros/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="zagros-is-a-bug-tracking-system" class="anchor" href="#zagros-is-a-bug-tracking-system" aria-hidden="true"><span class="octicon octicon-link"></span></a>Zagros is a bug tracking system</h1>
+
+<h2>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h2>
+
+<ol>
+<li>Run <code>composer create-project --prefer-dist mohsen/zagros</code>
+</li>
+<li>Edit database config in <code>app/config/database.php</code>
+</li>
+<li>Run <code>php artisan migrate --path=vendor/mohsen/zagros-core/src/migrations/</code>
+</li>
+<li>Run <code>php artisan asset:publish</code>
+</li>
+<li>Run Zagros from browser.</li>
+<li>Register in Zagros as admin user</li>
+<li>Go to <code>za_users</code> table of Zagros database and update field <code>admin</code> to <code>1</code> for one time.</li>
+</ol>
+
+<h2>
+<a id="localization" class="anchor" href="#localization" aria-hidden="true"><span class="octicon octicon-link"></span></a>Localization</h2>
+
+<p>For change language, you must edit <code>locale</code> index in <code>app/config/app.php</code> array.</p>
+
+<h3>
+<a id="available-languages" class="anchor" href="#available-languages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Available languages</h3>
+
+<p>English    =&gt; <code>en</code></p>
+
+<p>Indonesian =&gt; <code>id</code> thanks to <a href="https://github.com/mul14">mul14</a> and <a href="https://github.com/a9un9hari">a9un9hari</a></p>
+
+<h3>
+<a id="add-language" class="anchor" href="#add-language" aria-hidden="true"><span class="octicon octicon-link"></span></a>Add language</h3>
+
+<p>If you wnat translate this project to your language, you can translate <code>app/lang</code> to your language and create a pull request or email: <code>mohsen.sh12@hotmail.com</code></p>
+
+<h2>
+<a id="read-more" class="anchor" href="#read-more" aria-hidden="true"><span class="octicon octicon-link"></span></a>Read more</h2>
+
+<p>This project built on Laravel 4. if you find any issue please report.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Zagros maintained by <a href="https://github.com/mohsen-shafiee">mohsen-shafiee</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
