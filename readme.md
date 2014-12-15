@@ -17,6 +17,8 @@ English    => ```en```
 
 Indonesian => ```id``` thanks to [mul14](https://github.com/mul14) and [a9un9hari](https://github.com/a9un9hari)
 
+Persian => ```fa```
+
 ### Add language
 If you wnat translate this project to your language, you can translate ```app/lang``` to your language and create a pull request or email: ```mohsen.sh12@hotmail.com```
 
